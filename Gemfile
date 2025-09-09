@@ -5,6 +5,8 @@ ruby '3.4.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 8.0', '>= 8.0.2.1'
+# Postgresql para teste de CI
+gem 'pg', '~> 1.5', '>= 1.5.6'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 2.7', '>= 2.7.3'
 # Use Puma as the app server
