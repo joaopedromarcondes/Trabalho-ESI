@@ -60,6 +60,9 @@ group :test do
   gem 'selenium-webdriver', '>= 4.0.0.rc1'
   gem 'cucumber-rails', '~> 3.1', '>= 3.1.1', require: false
   gem 'database_cleaner', '~> 2.0', '>= 2.0.2'
+
+  gem 'simplecov', require: false
+  gem 'coveralls_reborn', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
