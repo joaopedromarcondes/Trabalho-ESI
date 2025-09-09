@@ -22,3 +22,6 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+
+[![Coverage Status](https://coveralls.io/repos/github/joaopedromarcondes/Trabalho-ESI/badge.svg?branch=master)](https://coveralls.io/github/joaopedromarcondes/Trabalho-ESI?branch=master)
