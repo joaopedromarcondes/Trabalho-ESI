@@ -25,3 +25,5 @@ Things you may want to cover:
 
 
 [![Coverage Status](https://coveralls.io/repos/github/joaopedromarcondes/Trabalho-ESI/badge.svg?branch=master)](https://coveralls.io/github/joaopedromarcondes/Trabalho-ESI?branch=master)
+
+[![Ruby on Rails CI](https://github.com/joaopedromarcondes/Trabalho-ESI/actions/workflows/rubyonrails.yml/badge.svg)](https://github.com/joaopedromarcondes/Trabalho-ESI/actions/workflows/rubyonrails.yml)

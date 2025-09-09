@@ -39,6 +39,8 @@ group :development, :test do
   gem 'bundler-audit', '~> 0.9.2'
 
   gem 'brakeman', '~> 7.1'
+
+  gem 'rubocop', '~> 1.80', '>= 1.80.2'
 end
 
 group :development do
@@ -56,7 +58,7 @@ group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 3.26'
   gem 'selenium-webdriver', '>= 4.0.0.rc1'
-  gem 'cucumber-rails', '~> 3.1', '>= 3.1.1'
+  gem 'cucumber-rails', '~> 3.1', '>= 3.1.1', require: false
   gem 'database_cleaner', '~> 2.0', '>= 2.0.2'
 end
 
