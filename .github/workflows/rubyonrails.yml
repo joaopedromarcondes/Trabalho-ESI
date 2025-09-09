@@ -39,6 +39,7 @@ jobs:
       # Add or replace test runners here
       - name: Run tests
         run: bin/rake
+            bundle exec rake test
 
       - name: Debug coverage folder
         run: ls -R coverage || echo "No coverage generated"
