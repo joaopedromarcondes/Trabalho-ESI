@@ -40,6 +40,10 @@ jobs:
       - name: Run tests
         run: bin/rake
 
+      - name: Debug coverage folder
+        run: ls -R coverage || echo "No coverage generated"
+
+
       - name: Upload coverage to Coveralls
         uses: coverallsapp/github-action@v2
         with:
