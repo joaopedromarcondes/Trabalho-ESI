@@ -37,6 +37,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 8.0', '>= 8.0.2'
 
   gem 'bundler-audit', '~> 0.9.2'
+
+  gem 'brakeman', '~> 7.1'
 end
 
 group :development do
