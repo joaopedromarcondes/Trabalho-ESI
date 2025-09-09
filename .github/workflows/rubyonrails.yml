@@ -37,7 +37,7 @@ jobs:
         # Este é o passo mais importante. Se ele falhar, o erro estará aqui.
         run: bin/rake
 
-      - name: ‼️ DEBUG: Check if coverage file was created
+      - name: DEBUG! Check if coverage file was created
         # Este passo vai nos dizer com 100% de certeza se o arquivo existe.
         # Se este passo falhar, o anterior não criou o arquivo.
         run: ls -R coverage
