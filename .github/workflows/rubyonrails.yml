@@ -41,6 +41,9 @@ jobs:
         # Este comando irá gerar o arquivo coverage/lcov.info
         run: bin/rake
 
+      - name: List project files
+        run: ls -R
+
       - name: Upload coverage reports to Coveralls
         uses: coverallsapp/github-action@v2
         with:
