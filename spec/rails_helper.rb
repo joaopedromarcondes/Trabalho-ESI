@@ -1,3 +1,31 @@
+# spec/rails_helper.rb
+
+# ==============================================================================
+# IMPORTANTE: A CONFIGURAÇÃO DO SIMPLECOV DEVE SER A PRIMEIRA COISA NO ARQUIVO
+# ==============================================================================
+require 'simplecov'
+SimpleCov.start 'rails' do
+  # Filtra arquivos/pastas que não precisam de cobertura
+  add_filter 'spec/'
+  add_filter 'config/'
+  
+  # Configuração para rodar no ambiente de CI (Continuous Integration)
+  if ENV['CI']
+    require 'simplecov-lcov'
+
+    SimpleCov::Formatter::LcovFormatter.config do |c|
+      c.report_with_single_file = true
+      c.single_report_path = 'coverage/lcov.info'
+    end
+
+    # Define o formatador para gerar o relatório no formato LCOV
+    formatter SimpleCov::Formatter::LcovFormatter
+  end
+end
+# ==============================================================================
+# FIM DA CONFIGURAÇÃO DO SIMPLECOV
+# ==============================================================================
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'

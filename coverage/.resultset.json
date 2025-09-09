@@ -1,0 +1,67 @@
+{
+  "RSpec": {
+    "coverage": {
+      "/home/jp/Documentos/USP/6sem/ESI/trabalho-semestral/trabalho-esi/app/helpers/application_helper.rb": {
+        "lines": [
+          1,
+          null
+        ]
+      },
+      "/home/jp/Documentos/USP/6sem/ESI/trabalho-semestral/trabalho-esi/app/channels/application_cable/channel.rb": {
+        "lines": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {}
+      },
+      "/home/jp/Documentos/USP/6sem/ESI/trabalho-semestral/trabalho-esi/app/channels/application_cable/connection.rb": {
+        "lines": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {}
+      },
+      "/home/jp/Documentos/USP/6sem/ESI/trabalho-semestral/trabalho-esi/app/controllers/application_controller.rb": {
+        "lines": [
+          0,
+          0
+        ],
+        "branches": {}
+      },
+      "/home/jp/Documentos/USP/6sem/ESI/trabalho-semestral/trabalho-esi/app/jobs/application_job.rb": {
+        "lines": [
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          0
+        ],
+        "branches": {}
+      },
+      "/home/jp/Documentos/USP/6sem/ESI/trabalho-semestral/trabalho-esi/app/mailers/application_mailer.rb": {
+        "lines": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {}
+      },
+      "/home/jp/Documentos/USP/6sem/ESI/trabalho-semestral/trabalho-esi/app/models/application_record.rb": {
+        "lines": [
+          0,
+          0,
+          0
+        ],
+        "branches": {}
+      }
+    },
+    "timestamp": 1757457561
+  }
+}
