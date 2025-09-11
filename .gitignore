@@ -43,3 +43,6 @@ yarn-debug.log*
 !/app/assets/builds/.keep
 
 /vendor/*
+
+/coverage/.resultset.json 
+/coverage/index.html
