@@ -5,17 +5,15 @@
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "5.4.4",
-    "turbolinks": "^5.2.0",
-    "webpack": "^5.101.3",
-    "webpack-cli": "^6.0.1"
+    "turbolinks": "^5.2.0"
   },
   "version": "0.1.0",
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "esbuild": "^0.25.9"
   },
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
     "heroku-postbuild": "yarn run build"
   }
 }
