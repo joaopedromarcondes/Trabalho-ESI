@@ -13,21 +13,19 @@
 - Vinicius Francisco Oliveira - 14720566 
 
 ## Descrição do Projeto
-Nosso software busca resolver **[descrição breve do problema]**.
+Nosso software busca resolver **esse problema**.
 
 ## Links
 - GitHub: [link](https://github.com/joaopedromarcondes/Trabalho-ESI)
-- Heroku: [link](https://thawing-springs-19434-c33e5e624a57.herokuapp.com/)*
+- Heroku: [link](https://thawing-springs-19434-c33e5e624a57.herokuapp.com/)
 - Pivotal Tracker: *(a ser incluído depois)*
 - CodeClimate: *(a ser incluído depois)*
 - Coveralls: *(a ser incluído depois)*
 
 # Documentação Técnica (Rails)
 
-This README would normally document whatever steps are necessary to get the
+This README explains the steps that are necessary to get the
 application up and running.
-
-Things you may want to cover:
 
 * Ruby version 
     -**Ruby 3.4.5**  
@@ -59,6 +57,5 @@ Things you may want to cover:
     bundle exec rake spec      # RSpec
     bundle exec rake cucumber  # Cucumber
 
-* Services (job queues, cache servers, search engines, etc.)
 * Deployment instructions
     git push heroku master
