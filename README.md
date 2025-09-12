@@ -12,50 +12,44 @@
 - Lucas Cesar Kataque - 14655848  
 - Vinicius Francisco Oliveira - 14720566 
 
-## Descrição do Projeto
-Nosso software busca resolver **esse problema**.
-
 ## Links
 - GitHub: [link](https://github.com/joaopedromarcondes/Trabalho-ESI)
 - Heroku: [link](https://thawing-springs-19434-c33e5e624a57.herokuapp.com/)
-- Pivotal Tracker: *(a ser incluído depois)*
-- CodeClimate: *(a ser incluído depois)*
-- Coveralls: *(a ser incluído depois)*
 
 # Documentação Técnica (Rails)
 
-This README explains the steps that are necessary to get the
-application up and running.
-
-* Ruby version 
+## versão do Ruby 
     -**Ruby 3.4.5**  
     - **Rails** (instalado e rodando com `rails server` em `localhost:3000`)
 
-* System dependencies
+## dependências do sistema
     - Node.js e Yarn instalados  
     - Bundler (`gem install bundler`)  
     - Banco de dados padrão: SQLite (desenvolvimento e teste)
 
-* Configuration
+## configurações
     1. Clonar o repositório:
-   ```bash
+```bash
    git clone git@github.com:joaopedromarcondes/Trabalho-ESI.git
    cd Trabalho-ESI
-
+```
     2. Instalar dependências:
+```bash
     bundle install
     yarn install
 
-* Database creation (cria o banco de dados local)
+## database creation (cria o banco de dados local)
+   
     rails db:create
     rails db:migrate
 
-* Database initialization (se houver seeds, rodar)
+## database initialization (se houver seeds, rodar)
     rails db:seed
 
-* How to run the test suite
+## como fazeros testes
     bundle exec rake spec      # RSpec
     bundle exec rake cucumber  # Cucumber
 
-* Deployment instructions
+## intruções de deploy
     git push heroku master
+```
