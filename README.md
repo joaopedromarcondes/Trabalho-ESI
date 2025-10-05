@@ -10,6 +10,7 @@
 - João Pedro Oliveira de Paula Marcondes - 14582570
 - Cleben Junior Cosendey Garcia - 14691220
 - Lucas Cesar Kataque - 14655848  
+- Victor Queiroga de Carvalho - 11271021
 - Vinicius Francisco Oliveira - 14720566 
 
 ## Links
