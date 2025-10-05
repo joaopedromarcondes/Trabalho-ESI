@@ -44,5 +44,4 @@ yarn-debug.log*
 
 /vendor/*
 
-/coverage/.resultset.json 
-/coverage/index.html
+/coverage/
