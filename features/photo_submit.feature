@@ -10,7 +10,7 @@ Cenário: Envio de arquivo .mp3 (incorreto)
     Dado que eu estou na página de adicionar foto
     Quando eu adicionar um arquivo .mp3
     Então o sistema irá recusar o arquivo
-    E irá exibir uma mensagem de erro.
+    E deve exibir a mensagem de erro "O arquivo de áudio está em um formato inválido. Por favor, envie uma imagem."
 
 
 Cenário: Envio de arquivo .png (correto)
@@ -20,7 +20,7 @@ Cenário: Envio de arquivo .png (correto)
 
 
 Cenário: Tentativa de envio sem foto
-    Dado que eu estou na página de adicionar uma nova área
+    Dado que eu estou na página de adicionar foto
     Quando eu tento submeter o formulário sem adicionar uma foto
     Então o sistema deve recusar a submissão
     E deve exibir a mensagem de erro "É necessário adicionar uma foto."
