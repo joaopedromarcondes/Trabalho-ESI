@@ -45,3 +45,6 @@ yarn-debug.log*
 /vendor/*
 
 /coverage/
+
+#Ignore RubyMine files
+/.idea/
