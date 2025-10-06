@@ -1,3 +1,5 @@
+# language: pt
+
 Funcionalidade: Contador de sequência de contribuições
   Como uma pessoa engajada,
   Quero que minha sequência (streak) de contribuições aumente diariamente,
