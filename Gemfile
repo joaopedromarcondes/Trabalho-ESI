@@ -45,6 +45,8 @@ group :development, :test do
   gem 'brakeman', '~> 7.1'
 
   gem 'rubocop', '~> 1.80', '>= 1.80.2'
+
+  gem 'factory_bot_rails', '~> 6.5', '>= 6.5.1'
 end
 
 group :development do
