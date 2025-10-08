@@ -3,8 +3,8 @@ class Photo < ApplicationRecord
 
 
   validates :foto,
-            attached: true,
-            content_type: {in: ['image/jpeg', 'image/png'], message: 'deve ser JPEG ou PNG'},
+            attached: {message: "É necessário adicionar uma foto."},
+            content_type: {in: ['image/jpeg', 'image/png'], message: 'deve ser JPEG ou PNG. Arquivo inválido.'},
             size: { less_than: 5.megabytes, message: 'deve ser menor que 5MB' }
   
 

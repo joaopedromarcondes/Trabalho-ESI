@@ -5,21 +5,29 @@ Dado('que eu estou na página de adicionar foto') do
 end
 
 Quando('eu adicionar um arquivo .mp3') do
-  attach_file('photo[audio]', Rails.root.join('spec/fixtures/files/audio_teste.mp3'))
+  attach_file('photo[foto]', Rails.root.join('spec/fixtures/files/audio_teste.mp3'))
   click_button 'Salvar'
 end
 
 Então('o sistema irá recusar o arquivo') do
-  expect(page).to have_content('Formato de arquivo inválido')
+  expect(page).to have_content('Foto deve ser JPEG ou PNG. Arquivo inválido.')
 end
 
 Quando('eu faço upload de um arquivo .png') do
-  attach_file('photo[audio]', Rails.root.join('spec/fixtures/files/audio_teste.mp3'))
+  attach_file('photo[foto]', Rails.root.join('spec/fixtures/files/foto-valida.png'))
+end
+
+E('preencho a latitude com {string} e a longitude com {string}, que são valores válidos') do |latitude, longitude|
+  fill_in 'photo[latitude]', with: latitude
+  fill_in 'photo[longitude]', with: longitude
+end
+
+E('envio o formulário') do
   click_button 'Salvar'
 end
 
 Então('o sistema irá aceitar o arquivo e exibir uma mensagem de sucesso.') do
-  expect(page).to have_content('Arquivo enviado com sucesso')
+  expect(page).to have_content('Foto criada com sucesso.')
 end
 
 

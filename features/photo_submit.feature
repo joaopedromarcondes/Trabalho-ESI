@@ -10,12 +10,14 @@ Cenário: Envio de arquivo .mp3 (incorreto)
     Dado que eu estou na página de adicionar foto
     Quando eu adicionar um arquivo .mp3
     Então o sistema irá recusar o arquivo
-    E deve exibir a mensagem de erro "O arquivo de áudio está em um formato inválido. Por favor, envie uma imagem."
+    E deve exibir a mensagem de erro "Foto deve ser JPEG ou PNG. Arquivo inválido."
 
 
 Cenário: Envio de arquivo .png (correto)
     Dado que eu estou na página de adicionar foto
     Quando eu faço upload de um arquivo .png
+    E preencho a latitude com "-23.55052" e a longitude com "-46.633308", que são valores válidos
+    E envio o formulário
     Então o sistema irá aceitar o arquivo e exibir uma mensagem de sucesso.
 
 

@@ -25,11 +25,11 @@ class PhotosController < ApplicationController
 
     respond_to do |format|
       if @photo.save
-        format.html { redirect_to @photo, notice: "Photo was successfully created." }
+        format.html { redirect_to @photo, notice: "Foto criada com sucesso." }
         format.json { render :show, status: :created, location: @photo }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @photo.errors, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
+        format.json { render json: @photo.errors, status: :unprocessable_content }
       end
     end
   end
@@ -41,8 +41,8 @@ class PhotosController < ApplicationController
         format.html { redirect_to @photo, notice: "Photo was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @photo }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @photo.errors, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_content }
+        format.json { render json: @photo.errors, status: :unprocessable_content }
       end
     end
   end
@@ -65,6 +65,6 @@ class PhotosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def photo_params
-      params.expect(photo: [ :foto, :latitude, :longitude ])
+      params.require(:photo).permit(:foto, :latitude, :longitude)
     end
 end

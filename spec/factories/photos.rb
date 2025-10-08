@@ -10,6 +10,14 @@ FactoryBot.define do
     end
 
     # Variações
+    trait :with_valid_image do
+      foto { Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'files', 'foto-valida.jpg'), 'image/jpeg') }
+    end
+
+    trait :with_invalid_image do
+      foto { Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'files', 'foto-invalida.txt'), 'text/plain') }
+    end
+
     trait :with_large_image do
       after(:build) do |photo|
         photo.foto.attach(io: File.open(Rails.root.join('spec', 'fixtures', 'files', 'foto-grande.jpg')), filename: 'foto-grande.jpg', content_type: 'image/jpeg')

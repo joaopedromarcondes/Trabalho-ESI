@@ -18,11 +18,11 @@ RSpec.describe "/photos", type: :request do
   # Photo. As you add validations to Photo, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    FactoryBot.attributes_for(:photo, :with_valid_image)
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    FactoryBot.attributes_for(:photo, :with_invalid_image)
   }
 
   describe "GET /index" do
@@ -87,14 +87,16 @@ RSpec.describe "/photos", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        FactoryBot.attributes_for(:photo, :with_valid_image, latitude: -10.0, longitude: -20.0)
       }
 
       it "updates the requested photo" do
         photo = Photo.create! valid_attributes
         patch photo_url(photo), params: { photo: new_attributes }
         photo.reload
-        skip("Add assertions for updated state")
+        expect(photo.latitude).to eq(-10.0)
+        expect(photo.longitude).to eq(-20.0)
+        expect(photo.foto).to be_attached
       end
 
       it "redirects to the photo" do

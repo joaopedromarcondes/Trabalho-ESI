@@ -2,11 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "photos/edit", type: :view do
   let(:photo) {
-    Photo.create!(
-      foto: nil,
-      latitude: 1.5,
-      longitude: 1.5
-    )
+    FactoryBot.build_stubbed(:photo)
   }
 
   before(:each) do
