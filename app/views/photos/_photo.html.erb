@@ -1,0 +1,17 @@
+<div id="<%= dom_id photo %>">
+  <p>
+    <strong>Foto:</strong>
+    <%= link_to photo.foto.filename, photo.foto if photo.foto.attached? %>
+  </p>
+
+  <p>
+    <strong>Latitude:</strong>
+    <%= photo.latitude %>
+  </p>
+
+  <p>
+    <strong>Longitude:</strong>
+    <%= photo.longitude %>
+  </p>
+
+</div>

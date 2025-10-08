@@ -1,0 +1,32 @@
+<%= form_with(model: photo) do |form| %>
+  <% if photo.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(photo.errors.count, "error") %> prohibited this photo from being saved:</h2>
+
+      <ul>
+        <% photo.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :foto, style: "display: block" %>
+    <%= form.file_field :foto %>
+  </div>
+
+  <div>
+    <%= form.label :latitude, style: "display: block" %>
+    <%= form.text_field :latitude %>
+  </div>
+
+  <div>
+    <%= form.label :longitude, style: "display: block" %>
+    <%= form.text_field :longitude %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
