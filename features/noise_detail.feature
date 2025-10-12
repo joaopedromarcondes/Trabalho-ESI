@@ -5,9 +5,6 @@ Funcionalidade: Visualizar o nível de ruído detalhado
   Eu quero poder tocar em uma área específica do mapa
   Para que eu possa visualizar o nível de ruído detalhado naquela localidade
 
-  Contexto:
-    Given que existem medições de ruído registradas
-
   Cenário: Clicar em uma área do mapa e ver o nível de ruído
     When eu clico em uma área do mapa
     Then eu devo ver o nível de ruído detalhado daquela localidade
