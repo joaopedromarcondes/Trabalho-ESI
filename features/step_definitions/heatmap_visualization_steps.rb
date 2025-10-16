@@ -8,10 +8,6 @@
 #  Quando eu acesso a página inicial do aplicativo
 #  Então eu devo ver um mapa de calor exibindo os níveis de ruído por região
 
-Dado('que existem medições de ruído registradas') do
-  NoiseMeasurement.create!(latitude: -23.561, longitude: -46.656, level: 75)
-  NoiseMeasurement.create!(latitude: -23.562, longitude: -46.657, level: 60)
-end
 
 Quando('eu acesso a página inicial do aplicativo') do
   visit root_path

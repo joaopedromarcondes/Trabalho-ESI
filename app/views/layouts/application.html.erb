@@ -17,9 +17,25 @@
 
   
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   </head>
 
   <body>
+
+    <header style="padding: 10px; background-color: #f0f0f0; margin-bottom: 20px; border-bottom: 1px solid #ccc;">
+      <% if user_signed_in? %>
+        <span>Olá!</span> |
+        <%= link_to "Sair", destroy_user_session_path %>
+      <% else %>
+        <%= link_to "Entrar", new_user_session_path %> |
+        <%= link_to "Registrar um novo usuário", new_user_registration_path %>
+      <% end %>
+    </header>
+
+    <p class="notice" style="color: green;"><%= notice %></p>
+    <p class="alert" style="color: red;"><%= alert %></p>
+
     <%= yield %>
+
   </body>
 </html>

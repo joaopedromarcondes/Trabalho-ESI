@@ -23,6 +23,9 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'devise'
+gem 'devise-i18n'
+
 # Use Active Storage variant
 gem 'image_processing', '~> 1.14'
 
@@ -47,6 +50,8 @@ group :development, :test do
   gem 'rubocop', '~> 1.80', '>= 1.80.2'
 
   gem 'factory_bot_rails', '~> 6.5', '>= 6.5.1'
+
+  gem 'letter_opener_web'
 end
 
 group :development do

@@ -1,0 +1,2 @@
+class NoiseMeasurement < ApplicationRecord
+end

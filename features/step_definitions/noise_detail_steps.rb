@@ -1,3 +1,5 @@
+@mapa
+
 # Esquema: Visualizar o nível de ruído detalhado
 #  Como um morador curioso
 #  Eu quero poder tocar em uma área específica do mapa
@@ -7,11 +9,6 @@
 #  Dado que existem medições de ruído registradas
 #  Quando eu clico em uma área do mapa
 #  Então eu devo ver o nível de ruído detalhado daquela localidade
-
-Dado('que existem medições de ruído registradas') do
-  NoiseMeasurement.create!(latitude: -23.561, longitude: -46.656, level: 75)
-  NoiseMeasurement.create!(latitude: -23.562, longitude: -46.657, level: 60)
-end
 
 Quando('eu clico em uma área do mapa') do
   visit root_path
