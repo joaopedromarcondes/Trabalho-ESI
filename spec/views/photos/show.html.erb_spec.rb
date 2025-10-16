@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "photos/show", type: :view do
   before(:each) do
-    assign(:photo, FactoryBot.build_stubbed(:photo, latitude: 2.5, longitude: 3.5))
+    assign(:photo, FactoryBot.create(:photo, latitude: 2.5, longitude: 3.5))
   end
 
   it "renders attributes in <p>" do

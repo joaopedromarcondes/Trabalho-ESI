@@ -4,15 +4,41 @@
 
 <%= link_to 'Home', root_path %>
 
+
+
 <h1>Photos</h1>
 
-<div id="photos">
-  <% @photos.each do |photo| %>
-    <%= render photo %>
-    <p>
-      <%= link_to "Show this photo", photo %>
-    </p>
-  <% end %>
-</div>
-
+<div id="map"></div>
+    
 <%= link_to "New photo", new_photo_path %>
+
+
+<style>
+    #map { height: 500px; width: 500px; }
+</style>
+
+<script>
+
+    function sucess(pos) {
+        var map = L.map('map').setView([pos.coords.latitude, pos.coords.longitude], 13);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        <% @photos.each do |photo| %>
+            var marker = L.marker([<%= photo.latitude %>, <%= photo.longitude %>]).addTo(map);
+ 
+            L.marker([<%= photo.latitude %>, <%= photo.longitude %>]).addTo(map)
+                .bindPopup('<img src="<%= url_for(photo.foto) %>" width="150" height="150" loading="lazy"><br><a href="<%= edit_photo_path(photo) %>">Editar imagem</a>')
+        <% end %>
+
+        /* console.log("sucess");
+        console.log(pos); */
+    }
+
+    navigator.geolocation.getCurrentPosition(sucess);
+
+
+</script>

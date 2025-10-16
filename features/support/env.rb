@@ -50,4 +50,32 @@ end
 # Possible values are :truncation and :transaction
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
-Cucumber::Rails::Database.javascript_strategy = :truncation
+
+
+require 'capybara/cucumber'
+require 'selenium-webdriver'
+
+Capybara.register_driver :selenium do |app|
+  options = Selenium::WebDriver::Firefox::Options.new
+
+  # Caminho do binário do Firefox Snap
+  options.binary = '/snap/firefox/current/usr/lib/firefox/firefox'
+
+  # === Simular localização em São Paulo ===
+  fake_location = {
+    location: { lat: -23.55052, lng: -46.633308 },
+    accuracy: 12000.0
+  }
+
+  options.add_preference('geo.prompt.testing', true)
+  options.add_preference('geo.prompt.testing.allow', true)
+  options.add_preference('permissions.default.geo', 1)
+  options.add_preference(
+    'geo.provider.network.url',
+    "data:application/json,#{fake_location.to_json}"
+  )
+
+  Capybara::Selenium::Driver.new(app, browser: :firefox, options: options)
+end
+
+Capybara.default_driver = :selenium

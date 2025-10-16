@@ -27,20 +27,13 @@ Cenário: Tentativa de envio sem foto
     Então o sistema deve recusar a submissão
     E deve exibir a mensagem de erro "É necessário adicionar uma foto."
 
-
-Cenário: Reportar um problema em uma área existente
-    Dado que eu estou visualizando os detalhes de uma área verde já mapeada
-    Quando eu seleciono a opção "Reportar um Problema"
-    E tiro uma foto de lixo acumulado
-    E envio a imagem
-    Então o sistema deve exibir a mensagem "Problema reportado com sucesso."
-    E o pino daquela área no mapa deve mudar para a cor amarela para indicar um alerta.
-
-
-Cenário: Validação de um envio de outro usuário
-    Dado que eu estou visualizando uma área mapeada por outro usuário
-    Quando eu toco no botão "Validar Área verde"
-    E tiro uma foto da área verde
-    E envio a imagem
-    Então o sistema deve aumentar o "nível de confiança" daquela área
-    E deve mostrar uma mensagem "Obrigado por ajudar a validar informações!"
+@javascript
+Cenário: Escolher uma área verde e editar a localização
+    Dado que eu estou na página de fotos
+    Quando eu visualizo um mapa com os pontos de fotos de áreas verdes
+    E escolho um ponto no mapa
+    Então eu abro a opção de editar o ponto
+    E altero a latitude para "-23.561414" e a longitude para "-46.655881"
+    E salvo as alterações
+    Então o sistema deve mostrar a página da foto alterada
+    E deve exibir a mensagem de sucesso "Photo was successfully updated."
