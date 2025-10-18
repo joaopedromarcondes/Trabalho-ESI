@@ -55,27 +55,38 @@ end
 require 'capybara/cucumber'
 require 'selenium-webdriver'
 
-Capybara.register_driver :selenium do |app|
-  options = Selenium::WebDriver::Firefox::Options.new
+require 'selenium-webdriver'
 
-  # Caminho do binário do Firefox Snap
-  options.binary = '/snap/firefox/current/usr/lib/firefox/firefox'
+firefox_paths = [
+  ENV['FIREFOX_BIN'],
+  '/snap/firefox/current/usr/lib/firefox/firefox',
+  '/usr/bin/firefox',
+  '/usr/local/bin/firefox'
+].compact
 
-  # === Simular localização em São Paulo ===
-  fake_location = {
-    location: { lat: -23.55052, lng: -46.633308 },
-    accuracy: 12000.0
-  }
+firefox_binary = firefox_paths.find { |p| File.exist?(p) }
 
-  options.add_preference('geo.prompt.testing', true)
-  options.add_preference('geo.prompt.testing.allow', true)
-  options.add_preference('permissions.default.geo', 1)
-  options.add_preference(
-    'geo.provider.network.url',
-    "data:application/json,#{fake_location.to_json}"
-  )
+if firefox_binary
+  Capybara.register_driver :selenium do |app|
+    options = Selenium::WebDriver::Firefox::Options.new
+    options.binary = firefox_binary
 
-  Capybara::Selenium::Driver.new(app, browser: :firefox, options: options)
+    fake_location = {
+      location: { lat: -23.55052, lng: -46.633308 },
+      accuracy: 12000.0
+    }
+
+    options.add_preference('geo.prompt.testing', true)
+    options.add_preference('geo.prompt.testing.allow', true)
+    options.add_preference('permissions.default.geo', 1)
+    options.add_preference('geo.provider.network.url', "data:application/json,#{fake_location.to_json}")
+
+    Capybara::Selenium::Driver.new(app, browser: :firefox, options: options)
+  end
+
+  Capybara.default_driver = :selenium
+else
+  warn "[Cucumber] No browser binary found. Falling back to :rack_test (no JS)."
+  Capybara.default_driver = :rack_test
 end
 
-Capybara.default_driver = :selenium

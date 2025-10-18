@@ -3,5 +3,6 @@ FactoryBot.define do
     name { "Usuário de Teste" }
     sequence(:email) { |n| "teste#{n}@email.com" }
     password { "password123" }
+    confirmed_at { Time.current }
   end
 end

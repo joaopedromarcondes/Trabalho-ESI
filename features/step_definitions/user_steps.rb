@@ -19,8 +19,8 @@ Então('eu devo ver a mensagem {string}') do |mensagem_confirmacao|
 end
 
 Dado('que eu já tenho uma conta no sistema') do
-    user = FactoryBot.create(:user, email: 'teste@email.com', password: '123456')
-    user.confirm
+  FactoryBot.create(:user, email: 'teste@email.com', password: '123456')
+  visit destroy_user_session_path if page.current_path != root_path && defined?(destroy_user_session_path)
 end
 
 Dado('não estou logado no sistema no momento') do
