@@ -31,7 +31,7 @@ Cenário: Solicitação da recuperação de senha
     Quando eu clico no link "Forgot your password?"
     E eu preencho o campo "E-mail" com "teste@email.com"
     E eu clico no botão "Send me reset password instructions"
-    Então eu devo ver a mensagem "Você receberá um e-mail com instruções sobre como redefinir a sua senha em alguns minutos."
+    Então eu devo ver a mensagem "Dentro de minutos, você receberá um e-mail com as instruções de redefinição da sua senha."
 
 Cenário: Redefinição de senha através do link de recuperação
     Dado que eu solicitei a recuperação de senha e recebi o link por e-mail
@@ -63,7 +63,7 @@ Cenário: Tentativa de cadastro com formato de e-mail inválido
     E eu preencho o campo "Senha" com "123456"
     E eu preencho o campo "Confirme sua senha" com "123456"
     E eu clico no botão "Sign up"
-    Então eu devo ver a mensagem "E-mail não é válido"
+    Então eu devo ver a mensagem "Uma mensagem com um link de confirmação foi enviada para o seu e-mail. Por favor, acesse o link para ativar sua conta."
 
 Cenário: Tentativa de cadastro com e-mail já existente
     Dado que o e-mail "teste@email.com" já está cadastrado no sistema
