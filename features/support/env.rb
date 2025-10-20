@@ -90,3 +90,12 @@ else
   Capybara.default_driver = :rack_test
 end
 
+
+# features/support/env.rb
+require 'database_cleaner/active_record'
+
+Before do
+  DatabaseCleaner.strategy = :truncation
+  DatabaseCleaner.clean
+end
+

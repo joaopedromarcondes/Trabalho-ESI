@@ -100,6 +100,11 @@ end
 
 Quando('eu visualizo um mapa com os pontos de fotos de áreas verdes') do
   expect(page).to have_selector('#map')
+
+  nova_foto = FactoryBot.create(:photo, latitude: -23.55052, longitude: -46.633308) # no meio de São Paulo
+
+  visit current_path # força o reload do mapa
+  expect(page).to have_selector('#map')
 end
 
 
