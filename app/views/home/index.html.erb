@@ -1,6 +1,36 @@
-<h1>Home</h1>
-Olá, Mundo!
-<br>
-<%= link_to 'Photos', photos_path %>
- |
- <%= link_to 'Enviar Áudio de Ruído', new_audio_submission_path %>
+<div class="home">
+    <h1>Bem-vindo!</h1>
+    <div id="map"></div> 
+    <br>
+    <div class="links-home">
+        <%= link_to 'Photos', photos_path %>
+        
+        <%= link_to 'Enviar Áudio de Ruído', new_audio_submission_path %>
+    </div>
+</div>
+
+
+<script>
+
+    function sucess(pos) {
+        var map = L.map('map').setView([pos.coords.latitude, pos.coords.longitude], 13);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        <% @photos.each do |photo| %>
+            var marker = L.marker([<%= photo.latitude %>, <%= photo.longitude %>]).addTo(map);
+ 
+            L.marker([<%= photo.latitude %>, <%= photo.longitude %>]).addTo(map)
+                .bindPopup('<img src="<%= url_for(photo.foto) %>" width="150" height="150" loading="lazy"><br><a href="<%= edit_photo_path(photo) %>">Editar imagem</a>')
+        <% end %>
+
+        /* console.log("sucess");
+        console.log(pos); */
+    }
+
+    navigator.geolocation.getCurrentPosition(sucess);
+
+</script>

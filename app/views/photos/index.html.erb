@@ -2,20 +2,11 @@
 
 <% content_for :title, "Photos" %>
 
-<%= link_to 'Home', root_path %>
-
-
-
 <h1>Photos</h1>
 
 <div id="map"></div>
     
 <%= link_to "New photo", new_photo_path %>
-
-
-<style>
-    #map { height: 500px; width: 500px; }
-</style>
 
 <script>
 
@@ -39,6 +30,5 @@
     }
 
     navigator.geolocation.getCurrentPosition(sucess);
-
 
 </script>

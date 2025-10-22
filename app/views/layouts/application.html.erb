@@ -22,20 +22,25 @@
 
   <body>
 
-    <header style="padding: 10px; background-color: #f0f0f0; margin-bottom: 20px; border-bottom: 1px solid #ccc;">
-      <% if user_signed_in? %>
-        <span>Olá!</span> |
-        <%= link_to "Sair", destroy_user_session_path %>
-      <% else %>
-        <%= link_to "Entrar", new_user_session_path %> |
-        <%= link_to "Registrar um novo usuário", new_user_registration_path %>
-      <% end %>
+    <header>
+      <div class="app-title">
+        <h1><%= link_to "Trabalho ESI", root_path %></h1>
+      </div>
+      <div class="user-login">
+        <% if user_signed_in? %>
+          <span>Olá!</span> |
+          <%= link_to "Sair", destroy_user_session_path %>
+        <% else %>
+          <%= link_to "Entrar", new_user_session_path %> |
+          <%= link_to "Registrar um novo usuário", new_user_registration_path %>
+        <% end %>
+      </div>
     </header>
 
     <p class="notice" style="color: green;"><%= notice %></p>
     <p class="alert" style="color: red;"><%= alert %></p>
 
-    <%= yield %>
+    <div class="conteudo"><%= yield %></div>
 
   </body>
 </html>
