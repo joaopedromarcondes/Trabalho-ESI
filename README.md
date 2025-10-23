@@ -47,7 +47,7 @@
 ## database initialization (se houver seeds, rodar)
     rails db:seed
 
-## como fazeros testes
+## como fazer os testes
     bundle exec rake spec      # RSpec
     bundle exec rake cucumber  # Cucumber
 
