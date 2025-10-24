@@ -1,7 +1,7 @@
-class AudioSubmission
-  include ActiveModel::Model
+class AudioSubmission < ApplicationRecord
+  belongs_to :user
 
-  attr_accessor :duration_seconds, :latitude, :longitude, :audio_attached
+  has_one_attached :audio
 
   validates :duration_seconds, presence: true
   validate :duration_within_limit
@@ -25,7 +25,7 @@ class AudioSubmission
   end
 
   def audio_presence
-    unless audio_attached
+    unless audio.attached?
       errors.add(:audio, 'é obrigatório')
     end
   end

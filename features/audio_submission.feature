@@ -24,6 +24,7 @@ Cenário: Submeter áudio com sucesso
   Então o sistema envia o áudio com os metadados de localização
   E exibe a mensagem de confirmação "Áudio enviado com sucesso"
   E o mapa é atualizado com um novo ponto de ruído
+  E o áudio deve estar associado ao usuário logado
 
 Cenário: Submeter áudio com duração maior que o máximo permitido
   Dado que acesso a tela de submissão de ruído
@@ -38,8 +39,6 @@ Cenário: Impedir envio sem localização
   E permito o uso do microfone pelo navegador
   E gravo um áudio válido
   Quando tento enviar o áudio sem selecionar uma localização
-  Então o sistema não envia o áudio
-  E exibe a mensagem de alerta "Informe a localização"
-  E o botão de enviar permanece desabilitado
+  Então o sistema exibe a mensagem "Informe a localização" e não permite o envio
 
 

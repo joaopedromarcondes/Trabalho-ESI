@@ -5,8 +5,11 @@ class AudioSubmissionsController < ApplicationController
 
   def create
     @audio_submission = AudioSubmission.new(audio_submission_params)
+    @audio_submission.user = current_user
 
     if @audio_submission.valid?
+      @audio_submission.save
+      @audio_submission.audio.attach(params[:audio_submission][:audio])
       redirect_to root_path, notice: 'Áudio enviado com sucesso'
     else
       flash.now[:alert] = @audio_submission.errors.full_messages.to_sentence
@@ -17,8 +20,6 @@ class AudioSubmissionsController < ApplicationController
   private
 
   def audio_submission_params
-    permitted = params.require(:audio_submission).permit(:latitude, :longitude, :duration_seconds)
-    permitted[:audio_attached] = params.dig(:audio_submission, :audio).present?
-    permitted
+    params.require(:audio_submission).permit(:latitude, :longitude, :duration_seconds, :audio)
   end
 end

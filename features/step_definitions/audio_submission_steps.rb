@@ -145,3 +145,7 @@ end
 Então('o botão de enviar permanece desabilitado') do
   expect(@audio_submission[:can_submit]).to be false
 end
+
+Então('o áudio deve estar associado ao usuário logado') do
+  expect(@audio_submission[:user_id]).to eq(@logged_in_user_id)
+end
