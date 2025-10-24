@@ -10,3 +10,13 @@ Rails.application.routes.draw do
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 end
+
+Rails.application.routes.draw do
+  root 'home#index'
+
+  # Endpoint para retornar dados de ruído em JSON
+  get 'noise_data', to: 'home#noise_data'
+
+  devise_for :users
+  resources :photos
+end

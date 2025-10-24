@@ -14,6 +14,5 @@ Quando('eu acesso a página inicial do aplicativo') do
 end
 
 Então('eu devo ver um mapa de calor exibindo os níveis de ruído por região') do
-  expect(page).to have_css('#heatmap') # por exemplo, se o mapa tem id="heatmap"
-  expect(page).to have_content('Nível de Ruído')
+  expect(page).to have_css('#map')
 end

@@ -18,7 +18,9 @@ Quando('eu clico em uma área do mapa') do
 end
 
 Então('eu devo ver o nível de ruído detalhado daquela localidade') do
-  # Exemplo: o app mostra "Nível de ruído: 75 dB"
-  expect(page).to have_content('Nível de ruído')
-  expect(page).to have_content('dB')
+    # Exemplo: o app mostra "Nível de ruído: 75 dB"
+  within('#noise-detail') do
+    expect(page).to have_content('Nível de ruído')
+    expect(page).to have_content('dB')
+  end
 end
