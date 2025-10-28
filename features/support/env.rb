@@ -84,7 +84,9 @@ if firefox_binary
     Capybara::Selenium::Driver.new(app, browser: :firefox, options: options)
   end
 
-  Capybara.default_driver = :selenium
+  Capybara.default_driver = :rack_test
+  Capybara.javascript_driver = :rack_test
+
 else
   warn "[Cucumber] No browser binary found. Falling back to :rack_test (no JS)."
   Capybara.default_driver = :rack_test
