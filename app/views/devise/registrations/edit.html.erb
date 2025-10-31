@@ -1,43 +1,92 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<h2>Editar Perfil</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+<%= form_for(current_user, url: users_profile_path, method: :patch, html: { multipart: true, class: "profile-form" }) do |f| %>
+  <% if current_user.errors.any? %>
+    <div class="error-messages">
+      <h4><%= pluralize(current_user.errors.count, "erro") %> impediram que seu perfil fosse salvo:</h4>
+      <ul>
+        <% current_user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
-    <% end %>
-  </div>
+  <div class="profile-section">
+    <h3>Informações do Perfil</h3>
+    <div class="field">
+      <%= f.label :name, "Nome" %>
+      <%= f.text_field :name, autofocus: true %>
+    </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+    <div class="field">
+      <%= f.label :email, "E-mail (não editável)" %>
+      <%= f.email_field :email, disabled: true, class: 'readonly-field' %>
+    </div>
 
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
+    <div class="field">
+      <%= f.label :bio, "Biografia" %>
+      <%= f.text_area :bio, rows: 4, placeholder: "Conte um pouco sobre você..." %>
+    </div>
 
-  <div class="actions">
-    <%= f.submit "Update" %>
+    <div class="field avatar-field">
+      <%= f.label :avatar, "Foto do Perfil" %>
+      <% if current_user.avatar.attached? %>
+        <div class="current-avatar">
+          <%= image_tag url_for(current_user.avatar), class: 'avatar-preview' %>
+        </div>
+      <% end %>
+      <%= f.file_field :avatar, accept: 'image/*' %>
+      <span class="file-upload-hint">Clique ou arraste uma imagem aqui</span>
+    </div>
+
+    <div class="actions profile-actions">
+      <%= f.submit "Atualizar Perfil", class: 'primary-button' %>
+    </div>
   </div>
 <% end %>
 
-<h3>Cancel my account</h3>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "password-form" }) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+  
+  <div class="password-section">
+    <h3>Alterar Senha</h3>
+    <div class="field">
+      <div class="label-with-hint">
+        <%= f.label :password, "Nova senha" %>
+        <span class="field-hint">(preencha apenas se quiser alterar)</span>
+      </div>
+      <%= f.password_field :password, autocomplete: "new-password" %>
+      <% if @minimum_password_length %>
+        <span class="field-hint">Mínimo de <%= @minimum_password_length %> caracteres</span>
+      <% end %>
+    </div>
 
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
+    <div class="field">
+      <%= f.label :password_confirmation, "Confirme a nova senha" %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+    </div>
 
-<%= link_to "Back", :back %>
+    <div class="field">
+      <div class="label-with-hint">
+        <%= f.label :current_password, "Senha atual" %>
+        <span class="field-hint">(necessária para alterar a senha)</span>
+      </div>
+      <%= f.password_field :current_password, autocomplete: "current-password" %>
+    </div>
+
+    <div class="actions password-actions">
+      <%= f.submit "Alterar Senha", class: 'password-button' %>
+    </div>
+  </div>
+<% end %>
+
+<div class="danger-zone">
+  <h3>Cancelar minha conta</h3>
+  <p>Deseja encerrar sua conta? <%= button_to "Cancelar minha conta", registration_path(resource_name), 
+    data: { turbo_confirm: "Tem certeza? Esta ação não pode ser desfeita." }, 
+    method: :delete, 
+    class: 'danger-button' %></p>
+</div>
+
+<%= link_to "Voltar", :back, class: 'back-link' %>

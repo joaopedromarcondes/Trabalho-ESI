@@ -28,8 +28,27 @@
       </div>
       <div class="user-login">
         <% if user_signed_in? %>
-          <span>Olá!</span> |
-          <%= link_to "Sair", destroy_user_session_path %>
+          <span class="greeting">Olá<%= ", #{current_user.name}" if current_user.name.present? %>!</span>
+          <%= link_to edit_user_registration_path, class: 'profile-link', title: 'Editar Perfil' do %>
+            <div class="profile-link-content">
+              <% if current_user.avatar.attached? %>
+                <%= image_tag url_for(current_user.avatar), class: 'avatar-mini', alt: 'Foto de perfil' %>
+              <% else %>
+                <i class="profile-icon">👤</i>
+              <% end %>
+              <span class="profile-text">
+                <span class="profile-label">Meu Perfil</span>
+                <i class="edit-icon">✎</i>
+              </span>
+            </div>
+          <% end %>
+          <%= button_to destroy_user_session_path, 
+              method: :delete,
+              class: 'logout-button',
+              form: { class: 'logout-form' },
+              data: { turbo: true } do %>
+            <i class="logout-icon">→</i> Sair
+          <% end %>
         <% else %>
           <%= link_to "Entrar", new_user_session_path %> |
           <%= link_to "Registrar um novo usuário", new_user_registration_path %>

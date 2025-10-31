@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users
+  
+  namespace :users do
+    resource :profile, only: [:update]
+  end
+  
   resources :photos
   resources :audio_submissions, only: [:new, :create]
   root 'home#index'
