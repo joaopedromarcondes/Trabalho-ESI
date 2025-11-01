@@ -39,7 +39,7 @@
     yarn install
 
 ## database creation (cria o banco de dados local)
-   
+
     rails db:create
     rails db:migrate
 
