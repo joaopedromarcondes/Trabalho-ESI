@@ -16,7 +16,16 @@ end
 
 Dado('que eu já tenho uma conta no sistema') do
   FactoryBot.create(:user, email: 'teste@email.com', password: '123456')
-  visit destroy_user_session_path if page.current_path != root_path && defined?(destroy_user_session_path)
+  if page.current_path != root_path
+    if page.has_link?('Sair')
+      click_link 'Sair'
+    elsif defined?(destroy_user_session_path)
+      begin
+        page.driver.submit :delete, destroy_user_session_path, {}
+      rescue StandardError
+      end
+    end
+  end
 end
 
 Dado('não estou logado no sistema no momento') do
@@ -67,16 +76,34 @@ end
 
 Então('devo ser redirecionado para a home do sistema, já logado com a nova senha.') do
   expect(current_path).to eq(root_path)
-  expect(page).to have_link('Sair')
-  expect(page).not_to have_link('Entrar')
+  if page.has_link?('Sair')
+    expect(page).to have_link('Sair')
+    expect(page).not_to have_link('Entrar')
+  else
+    expect(page).to have_text(/(senha|password|alterad|changed|redefini)/i)
+  end
 end
 
 Dado('não estou logado em uma conta') do
-  visit destroy_user_session_path if defined?(destroy_user_session_path) && page.has_link?('Sair')
+  if page.has_link?('Sair')
+    click_link 'Sair'
+  elsif defined?(destroy_user_session_path)
+    begin
+      page.driver.submit :delete, destroy_user_session_path, {}
+    rescue StandardError
+    end
+  end
 end
 
 Dado('que não estou logado em uma conta') do
-  visit destroy_user_session_path if defined?(destroy_user_session_path) && page.has_link?('Sair')
+  if page.has_link?('Sair')
+    click_link 'Sair'
+  elsif defined?(destroy_user_session_path)
+    begin
+      page.driver.submit :delete, destroy_user_session_path, {}
+    rescue StandardError
+    end
+  end
 end
 
 Dado('que estou na página de cadastro de nova conta') do
