@@ -7,8 +7,7 @@
 <%= form_with url: audio_submissions_path, scope: :audio_submission, local: true, multipart: true do |f| %>
   <div>
     <label>Áudio</label>
-    <button type="button" id="start-recording">Iniciar Gravação</button>
-    <button type="button" id="stop-recording">Parar Gravação</button>
+    <%= f.file_field :audio %>
   </div>
 
   <div>
