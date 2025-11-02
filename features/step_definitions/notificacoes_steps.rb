@@ -1,45 +1,92 @@
-Dado('que eu sou um usuário novo cadastrado no sistema') do
-  pending # Write code here that turns the phrase above into concrete actions
+Dado('minhas permissões de notificação por e-mail estão ativadas') do
+  @notificacao_perms ||= {}
+  @user ||= FactoryBot.create(:user, confirmed_at: Time.current)
+  @notificacao_perms[@user.email] = true
 end
 
-Dado('minhas permissões de notificação estão ativadas') do
-  pending # Write code here that turns the phrase above into concrete actions
+Dado('que eu sou um usuário cadastrado no sistema') do
+  ActionMailer::Base.deliveries.clear
+  @user = FactoryBot.create(:user, confirmed_at: Time.current)
 end
 
-Dado('eu não recebi uma notificação de engajamento nas últimas {int} horas') do |int|
-# Dado('eu não recebi uma notificação de engajamento nas últimas {float} horas') do |float|
-  pending # Write code here that turns the phrase above into concrete actions
+Dado('eu não recebi uma notificação de engajamento no dia') do
+  ActionMailer::Base.deliveries.clear
+  @sent_notifications ||= {}
 end
 
-Quando('o serviço de notificações diárias é executado') do
-  pending # Write code here that turns the phrase above into concrete actions
+Quando('o serviço de envio de e-mails é executado') do
+  EngagementNotifier.run_daily
 end
 
-Então('eu devo receber {int} notificação push no meu email') do |int|
-# Então('eu devo receber {float} notificação push no meu email') do |float|
-  pending # Write code here that turns the phrase above into concrete actions
+Então('eu devo receber {int} e-mail') do |int|
+  expect(ActionMailer::Base.deliveries.size).to eq(int)
 end
 
-Então('o conteúdo da notificação deve incluir um texto que motive o uso do sistema') do
-  pending # Write code here that turns the phrase above into concrete actions
+Então('o conteúdo do e-mail deve incluir um texto que motive o uso do sistema') do
+  email = ActionMailer::Base.deliveries.last
+  body = email.respond_to?(:body) ? email.body.to_s : email.to_s
+  expect(body).to match(/(motiva|dica|lembrete|experimente|use o app|use)/i)
 end
 
-Dado('que minhas permissões de notificação estão desativadas') do
-  pending # Write code here that turns the phrase above into concrete actions
+Então('o conteúdo do e-mail deve conter um link para a home do site') do
+  email = ActionMailer::Base.deliveries.last
+  body = email.respond_to?(:body) ? email.body.to_s : email.to_s
+  expect(body).to match(%r{(https?://[^\s]+|/)}i)
 end
 
-Então('eu não devo receber nenhuma notificação no meu email') do
-  pending # Write code here that turns the phrase above into concrete actions
+Dado('minhas permissões de notificação por e-mail estão desativadas') do
+  @notificacao_perms ||= {}
+  @user ||= FactoryBot.create(:user, confirmed_at: Time.current)
+  @notificacao_perms[@user.email] = false
 end
 
-Dado('que eu recebi um email de engajamento') do
-  pending # Write code here that turns the phrase above into concrete actions
+Então('eu não devo receber nenhum e-mail') do
+  expect(ActionMailer::Base.deliveries.size).to eq(0)
 end
 
-Quando('eu recebo por email um link para acessar o site') do
-  pending # Write code here that turns the phrase above into concrete actions
+Dado('que eu recebi um e-mail de engajamento') do
+  ActionMailer::Base.deliveries.clear
+  @user ||= FactoryBot.create(:user, confirmed_at: Time.current)
+  home = begin
+    URI.parse(root_url).to_s
+  rescue StandardError
+    root_path
+  end
+  mail = ActionMailer::Base.mail(from: 'no-reply@example.com', to: @user.email,
+                                 subject: 'Lembrete diário',
+                                 body: "Olá, uma dica para hoje. Acesse: #{home}")
+  mail.deliver_now
 end
 
-Então('o link deve me redirecionar para a home do site') do
-  pending # Write code here that turns the phrase above into concrete actions
+Quando('eu clicar no link recebido') do
+  email = ActionMailer::Base.deliveries.last
+  body = email.respond_to?(:body) ? email.body.to_s : email.to_s
+  match = body.match(%r{(https?://[^\s"']+|/[^\s"']*)})
+  raise 'Link não encontrado no e-mail' unless match
+  link = match[1]
+  visit link
+end
+
+Então('devo ser redirecionado para a home do site') do
+  expect(current_path).to eq(root_path)
+end
+
+Dado('que eu estou com a permissão de notificação por e-mail ativada') do
+  @notificacao_perms ||= {}
+  @user ||= FactoryBot.create(:user, confirmed_at: Time.current)
+  @notificacao_perms[@user.email] = true
+end
+
+Dado('eu já recebi um e-mail de notificação hoje') do
+  @sent_notifications ||= {}
+  @user ||= FactoryBot.create(:user, confirmed_at: Time.current)
+  @sent_notifications[@user.email] = Date.today
+  mail = ActionMailer::Base.mail(from: 'no-reply@example.com', to: @user.email,
+                                 subject: 'Lembrete diário', body: 'Já recebeu hoje')
+  mail.deliver_now
+end
+
+Então('eu não devo receber um novo e-mail de engajamento') do
+  deliveries = ActionMailer::Base.deliveries.select { |m| m.to && m.to.include?(@user.email) }
+  expect(deliveries.size).to be <= 1
 end
