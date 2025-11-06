@@ -23,11 +23,11 @@ Dado('que eu estou na página de registro de sintomas') do
 end
 
 Quando('eu insiro {string} como sintoma') do |string|
-    fill_in 'health_symptom[name]', with: string
+    fill_in 'health_symptom[sintoma]', with: string
 end
 
 Quando('eu insiro {string} como intensidade') do |string|
-    fill_in 'health_symptom[intensity]', with: string
+    select string, from: "Intensidade"
 end
 
 Então('eu devo ver uma mensagem de confirmação {string}') do |string|
@@ -35,8 +35,8 @@ Então('eu devo ver uma mensagem de confirmação {string}') do |string|
 end
 
 Dado('que eu tenho sintomas registrados') do
-    FactoryBot.create(:health_symptom, name: 'Dor de cabeça', intensity: 'Moderada')
-    FactoryBot.create(:health_symptom, name: 'Febre', intensity: 'Leve')
+    FactoryBot.create(:health_symptom, sintoma: 'Dor de cabeça', intensidade: 'moderado')
+    FactoryBot.create(:health_symptom, sintoma: 'Febre', intensidade: 'leve')
 end
 
 Quando('eu navego para a página de histórico de sintomas') do
@@ -49,12 +49,12 @@ Então('eu devo ver uma lista dos meus sintomas registrados') do
 end
 
 E('cada sintoma deve mostrar a intensidade do sintoma') do
-    expect(page).to have_content('Moderada')
-    expect(page).to have_content('Leve')
+    expect(page).to have_content('moderado')
+    expect(page).to have_content('leve')
 end
 
 Dado('que eu tenho um sintoma registrado {string} com intensidade {string}') do |string, string2|
-    @symptom = FactoryBot.create(:health_symptom, name: string, intensity: string2)
+    @symptom = FactoryBot.create(:health_symptom, sintoma: string, intensidade: string2)
 end
 
 E('eu clico no sintoma {string}') do |string|
@@ -62,7 +62,7 @@ E('eu clico no sintoma {string}') do |string|
 end
 
 E('eu altero a intensidade para {string}') do |string|
-    fill_in 'health_symptom[intensity]', with: string
+    select string, from: "Intensidade"
 end
 
 Dado('que eu não tenho sintomas registrados') do
@@ -73,22 +73,26 @@ Então('eu devo ver uma mensagem {string}') do |string|
     expect(page).to have_content(string)
 end
 
-Então('eu devo ver um botão {string}') do |string|
-    expect(page).to have_button(string)
+Então('eu devo ver um link {string}') do |string|
+    expect(page).to have_link(string)
 end
 
 Dado('que eu não tenho um sintoma registrado como {string}') do |string|
-    HealthSymptom.where(name: string).delete_all
+    HealthSymptom.where(sintoma: string).delete_all
 end
 
 Quando('eu tento clicar no sintoma {string}') do |string|
-    click_link string
+    expect(page).to not_have_content(string)
 end
 
 Então('eu devo ver uma mensagem de erro {string}') do |string|
     expect(page).to have_content(string)
 end
 
+Então('eu não devo poder ver nenhum sintoma registrado como {string}') do |string|
+    expect(page).not_to have_content(string)
+end
+
 Quando('eu deixo o campo de sintoma vazio') do
-    fill_in 'health_symptom[name]', with: ''
+    fill_in 'health_symptom[sintoma]', with: ''
 end

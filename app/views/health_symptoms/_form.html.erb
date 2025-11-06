@@ -1,0 +1,28 @@
+<%= form_with(model: health_symptom) do |form| %>
+  <% if health_symptom.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(health_symptom.errors.count, "error") %> prohibited this health_symptom from being saved:</h2>
+
+      <ul>
+        <% health_symptom.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :sintoma, style: "display: block" %>
+    <%= form.text_field :sintoma %>
+  </div>
+
+  <div>
+    <%= form.label :intensidade, style: "display: block" %>
+    <%= form.select :intensidade, HealthSymptom.intensidades.keys.map { |k| [k.humanize, k] } %>
+  </div>
+
+
+  <div>
+    <%= form.submit @health_symptom.new_record? ? "Registrar Sintoma" : "Salvar Alterações" %>
+  </div>
+<% end %>

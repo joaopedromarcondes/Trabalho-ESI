@@ -1,0 +1,11 @@
+<% content_for :title, "New health symptom" %>
+
+<h1>New health symptom</h1>
+
+<%= render "form", health_symptom: @health_symptom %>
+
+<br>
+
+<div>
+  <%= link_to "Back to health symptoms", health_symptoms_path %>
+</div>

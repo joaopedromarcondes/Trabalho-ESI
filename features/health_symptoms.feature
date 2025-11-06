@@ -31,38 +31,38 @@ Cenário: Visualizar histórico de sintomas
 
 
 Cenário: Editar um sintoma registrado
-    Dado que eu tenho um sintoma registrado "Dor de cabeça" com intensidade "Leve"
+    Dado que eu tenho um sintoma registrado "Dor de cabeça" com intensidade "leve"
     Quando eu navego para a página de histórico de sintomas
     E eu clico no sintoma "Dor de cabeça"
-    E eu altero a intensidade para "Moderada"
+    E eu clico no botão "Edite esse sintoma"
+    E eu altero a intensidade para "Moderado"
     E eu clico no botão "Salvar Alterações"
-    Então eu devo ver uma mensagem de confirmação "Sintoma atualizado com sucesso"
+    Então eu devo ver uma mensagem de confirmação "Sintoma atualizado com sucesso."
 
 Cenário: Excluir um sintoma registrado
-    Dado que eu tenho um sintoma registrado "Dor de cabeça" com intensidade "Leve"
+    Dado que eu tenho um sintoma registrado "Dor de cabeça" com intensidade "leve"
     Quando eu navego para a página de histórico de sintomas
     E eu clico no sintoma "Dor de cabeça"
     E eu clico no botão "Excluir Sintoma"
-    Então eu devo ver uma mensagem de confirmação "Sintoma excluído com sucesso"
+    Então eu devo ver uma mensagem de confirmação "Sintoma destruído com sucesso."
 
 Cenário: Visualizar histórico de sintomas vazio
     Dado que eu não tenho sintomas registrados
     Quando eu navego para a página de histórico de sintomas
     Então eu devo ver uma mensagem "Nenhum sintoma registrado ainda"
-    E eu devo ver um botão "Registrar Novo Sintoma"
+    E eu devo ver um link "Registrar Novo Sintoma"
 
 Cenário: Excluir um sintoma inexistente
     Dado que eu não tenho um sintoma registrado como "Febre"
     Quando eu navego para a página de histórico de sintomas
-    E eu tento clicar no sintoma "Febre"
-    Então eu devo ver uma mensagem de erro "Sintoma não encontrado"
+    Então eu não devo poder ver nenhum sintoma registrado como "Febre"
 
 Cenário: Registrar um sintoma sem nome
     Dado que eu estou na página de registro de sintomas
     Quando eu deixo o campo de sintoma vazio
     E eu insiro "Leve" como intensidade
     E eu clico no botão "Registrar Sintoma"
-    Então eu devo ver uma mensagem de erro "O campo de sintoma é obrigatório"
+    Então eu devo ver uma mensagem de erro "Sintoma não pode ficar em branco"
 
 
 

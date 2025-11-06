@@ -1,0 +1,12 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @health_symptom %>
+
+<div>
+  <div class="links">
+    <%= link_to "Edite esse sintoma", edit_health_symptom_path(@health_symptom) %> |
+    <%= link_to "Back to health symptoms", health_symptoms_path %>
+  </div>
+
+  <%= button_to "Excluir Sintoma", @health_symptom, method: :delete %>
+</div>

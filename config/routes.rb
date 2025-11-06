@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :health_symptoms
   devise_for :users
   
   namespace :users do

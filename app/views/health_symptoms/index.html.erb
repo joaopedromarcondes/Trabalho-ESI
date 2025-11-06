@@ -1,0 +1,17 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Health symptoms" %>
+
+<h1>Health symptoms</h1>
+
+<div id="health_symptoms">
+  <% if @health_symptoms.empty? %>
+    <p>Nenhum sintoma registrado ainda</p>
+  <% end %>
+
+  <% @health_symptoms.each do |health_symptom| %>
+    <%= render health_symptom %>
+  <% end %>
+</div>
+
+<%= link_to "Registrar Novo Sintoma", new_health_symptom_path %>
