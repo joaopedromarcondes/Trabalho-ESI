@@ -29,19 +29,47 @@
       <div class="user-login">
         <% if user_signed_in? %>
           <span class="greeting">Olá<%= ", #{current_user.name}" if current_user.name.present? %>!</span>
-          <%= link_to edit_user_registration_path, class: 'profile-link', title: 'Editar Perfil' do %>
-            <div class="profile-link-content">
-              <% if current_user.avatar.attached? %>
-                <%= image_tag url_for(current_user.avatar), class: 'avatar-mini', alt: 'Foto de perfil' %>
-              <% else %>
-                <i class="profile-icon">👤</i>
-              <% end %>
-              <span class="profile-text">
-                <span class="profile-label">Meu Perfil</span>
-                <i class="edit-icon">✎</i>
-              </span>
-            </div>
-          <% end %>
+          <div class="profile-dropdown">
+            <button class="profile-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Abrir menu do perfil">
+              <div class="profile-link-content">
+                <% if current_user.avatar.attached? %>
+                  <%= image_tag url_for(current_user.avatar), class: 'avatar-mini', alt: 'Foto de perfil' %>
+                <% else %>
+                  <i class="profile-icon">👤</i>
+                <% end %>
+                <span class="profile-text">
+                  <span class="profile-label">Meu Perfil</span>
+                  <i class="edit-icon" aria-hidden="true">✎</i>
+                </span>
+              </div>
+            </button>
+            <ul class="profile-menu" role="menu" aria-label="Menu do perfil">
+              <li role="none"><%= link_to 'Minha Atividade', users_activity_path, role: 'menuitem', class: 'profile-menu-item' %></li>
+              <li role="none"><%= link_to 'Editar Perfil', edit_user_registration_path, role: 'menuitem', class: 'profile-menu-item' %></li>
+            </ul>
+          </div>
+            <%# garantia de que o menu do perfil funcione corretamente %>
+            <script>
+              (function(){
+                try {
+                  if (window.__profileMenuFallbackApplied) return; window.__profileMenuFallbackApplied = true;
+                  document.addEventListener('click', function(e){
+                    var t = e.target.closest && e.target.closest('.profile-toggle');
+                    if (t) {
+                      e.preventDefault();
+                      var dd = t.closest('.profile-dropdown');
+                      if (!dd) return;
+                      if (dd.classList.contains('open')) dd.classList.remove('open'); else dd.classList.add('open');
+                      return;
+                    }
+                    // close if clicking outside any open dropdown
+                    var open = document.querySelector('.profile-dropdown.open');
+                    if (open && !e.target.closest('.profile-dropdown')) open.classList.remove('open');
+                  });
+                  document.addEventListener('keydown', function(e){ if (e.key === 'Escape'){ var open = document.querySelector('.profile-dropdown.open'); if(open) open.classList.remove('open'); } });
+                } catch (err) { console && console.warn && console.warn('profile fallback failed', err); }
+              })();
+            </script>
           <%= button_to destroy_user_session_path, 
               method: :delete,
               class: 'logout-button',

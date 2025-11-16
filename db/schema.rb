@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_06_115138) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_16_120000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -62,6 +62,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_06_115138) do
     t.integer "level"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_noise_measurements_on_user_id"
   end
 
   create_table "photos", force: :cascade do |t|
@@ -69,6 +71,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_06_115138) do
     t.float "longitude"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_photos_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -96,4 +100,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_06_115138) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "audio_submissions", "users"
+  add_foreign_key "noise_measurements", "users"
+  add_foreign_key "photos", "users"
 end

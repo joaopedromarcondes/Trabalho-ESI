@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   
   namespace :users do
     resource :profile, only: [:update]
+    get 'activity', to: 'activity#index', as: 'activity'
   end
   
   resources :photos

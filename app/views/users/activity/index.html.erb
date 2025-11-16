@@ -1,0 +1,80 @@
+<h2>Minha Atividade</h2>
+
+<div class="profile-summary">
+  <div class="avatar-large">
+    <% if @user.avatar.attached? %>
+      <%= image_tag url_for(@user.avatar), class: 'avatar-preview' %>
+    <% else %>
+      <div class="avatar-placeholder">👤</div>
+    <% end %>
+  </div>
+  <div class="profile-info">
+    <h3><%= @user.name %></h3>
+    <p><strong>Email:</strong> <%= @user.email %></p>
+    <% if @user.bio.present? %>
+      <p><strong>Sobre:</strong> <%= @user.bio %></p>
+    <% end %>
+  </div>
+</div>
+
+<hr />
+
+<section class="activity-section">
+  <h3>Áudios enviados</h3>
+  <% if @audio_submissions.any? %>
+    <ul>
+      <% @audio_submissions.each do |a| %>
+        <li><%= l a.created_at, format: :short %> — Duração: <%= a.duration_seconds %>s — Local: (<%= a.latitude %>, <%= a.longitude %>)</li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>Você ainda não enviou áudios.</p>
+  <% end %>
+</section>
+
+<section class="activity-section">
+  <h3>Fotos enviadas</h3>
+  <% if @photos.any? %>
+    <div class="photo-grid" aria-label="Fotos enviadas">
+      <% @photos.each do |p| %>
+        <div class="photo-cell">
+          <% full_src = nil %>
+          <% if p.foto.attached? %>
+            <% begin %>
+              <% full_src = url_for(p.foto) %>
+            <% rescue %>
+              <% full_src = nil %>
+            <% end %>
+          <% end %>
+          <%= link_to photo_path(p), class: 'photo-link', data: { lightbox: true, full_src: full_src } do %>
+            <% if p.foto.attached? %>
+              <%# Use a reasonable variant for thumbnails with a safe fallback %>
+              <% begin %>
+                <%= image_tag url_for(p.foto.variant(resize_to_fill: [600, 600]).processed), alt: "Foto enviada em #{l p.created_at, format: :short}", class: 'photo-thumb' %>
+              <% rescue => _e %>
+                <%= image_tag url_for(p.foto), alt: "Foto enviada em #{l p.created_at, format: :short}", class: 'photo-thumb' %>
+              <% end %>
+            <% else %>
+              <div class="photo-placeholder">Sem imagem</div>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p>Você ainda não enviou fotos.</p>
+  <% end %>
+</section>
+
+<section class="activity-section">
+  <h3>Medições de ruído</h3>
+  <% if @noise_measurements.any? %>
+    <ul>
+      <% @noise_measurements.each do |n| %>
+        <li><%= l n.created_at, format: :short %> — Nível: <%= n.level %> dB — Local: (<%= n.latitude %>, <%= n.longitude %>)</li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>Você ainda não registrou medições de ruído.</p>
+  <% end %>
+</section>
