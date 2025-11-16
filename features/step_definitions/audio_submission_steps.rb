@@ -36,9 +36,6 @@ end
 
 Dado('que acesso a tela de submissão de ruído') do
   @audio_submission = {
-    microphone_allowed: false,
-    recording_duration: 0,
-    recording: false,
     location_selected: false,
     audio_sent: false,
     can_submit: false,
@@ -48,28 +45,12 @@ Dado('que acesso a tela de submissão de ruído') do
   @current_page = 'audio_submission'
 end
 
-Dado('permito o uso do microfone pelo navegador') do
-  @audio_submission[:microphone_allowed] = true
-end
-
-Quando('pressiono o botão de gravar') do
-  @audio_submission[:recording] = true
-  @audio_submission[:recording_duration] = 0
-end
-
-Quando('gravo um áudio por {int} segundos') do |duration|
-  @audio_submission[:recording_duration] = duration
-  @audio_submission[:recording] = false
-end
-
-Quando('seleciono minha localização atual no mapa') do
-  @audio_submission[:location_selected] = true
+Dado('seleciono um arquivo de áudio válido') do
+  @audio_submission[:audio_selected] = true
 end
 
 Quando('pressiono o botão de enviar') do
-  duration = @audio_submission[:recording_duration]
-  valid_duration = duration.positive? && duration <= AUDIO_DURATION_LIMIT
-  ready = @audio_submission[:microphone_allowed] && valid_duration && @audio_submission[:location_selected]
+  ready = @audio_submission[:audio_selected] && @audio_submission[:location_selected]
 
   if ready
     @audio_submission[:audio_sent] = true
@@ -79,7 +60,6 @@ Quando('pressiono o botão de enviar') do
   else
     @audio_submission[:audio_sent] = false
     @audio_submission[:can_submit] = false
-    @audio_submission[:messages] << 'O áudio deve ter até 60 segundos' if duration > AUDIO_DURATION_LIMIT
     @audio_submission[:messages] << 'Informe a localização' unless @audio_submission[:location_selected]
   end
 
@@ -99,34 +79,9 @@ Então('o mapa é atualizado com um novo ponto de ruído') do
   expect(@audio_submission[:map_points]).to be > 0
 end
 
-Quando('continuo gravando por mais de {int} segundos') do |limit|
-  @audio_submission[:recording] = false
-  @audio_submission[:recording_duration] = limit + 1
-  @audio_submission[:can_submit] = false
-  @audio_submission[:audio_sent] = false
-  @audio_submission[:messages] << 'O áudio deve ter até 60 segundos'
-  @audio_submission[:messages].uniq!
-end
-
-Então('o sistema interrompe a gravação automaticamente') do
-  expect(@audio_submission[:recording]).to be false
-end
-
-Então('exibe a mensagem {string}') do |mensagem|
-  expect(@audio_submission[:messages]).to include(mensagem)
-end
-
-Então('não permite enviar o áudio até que seja gravado novamente dentro do limite') do
-  duration = @audio_submission[:recording_duration]
-  expect(duration).to be > AUDIO_DURATION_LIMIT
-  expect(@audio_submission[:can_submit]).to be false
-end
-
-Dado('gravo um áudio válido') do
+Dado('seleciono um arquivo de áudio válido') do
   @audio_submission ||= {}
-  @audio_submission[:microphone_allowed] = true
-  @audio_submission[:recording_duration] = 30
-  @audio_submission[:recording] = false
+  @audio_submission[:audio_selected] = true
 end
 
 Quando('tento enviar o áudio sem selecionar uma localização') do
