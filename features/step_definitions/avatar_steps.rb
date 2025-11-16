@@ -26,17 +26,8 @@ Dado('que o usuário já possui o avatar {string}') do |avatar_key|
 end
 
 Quando('o usuário adquire o avatar {string}') do |avatar_key|
-  @acquisition_result = nil
-  catalog_item = @catalog[avatar_key]
-  if catalog_item.nil?
-    @acquisition_result = :invalid_avatar
-  elsif @user[:owned_avatars].include?(avatar_key)
-    @acquisition_result = :already_owned
-  else
-      @user[:owned_avatars] << avatar_key
-    @user[:current_avatar] = avatar_key
-    @acquisition_result = :approved
-  end
+  service = AvatarService.new(@user, @catalog)
+  @acquisition_result = service.acquire(avatar_key)
 end
 
 Quando('o usuário tenta adquirir o avatar {string}') do |avatar_key|
@@ -64,12 +55,8 @@ Então('o avatar {string} continua associado ao usuário') do |avatar_key|
 end
 
 Quando('o usuário seleciona o avatar {string} como avatar atual') do |avatar_key|
-  if @user[:owned_avatars].include?(avatar_key)
-    @user[:current_avatar] = avatar_key
-    @apply_result = :ok
-  else
-    @apply_result = :not_owned
-  end
+  service = AvatarService.new(@user, @catalog)
+  @apply_result = service.select(avatar_key)
 end
 
 Então('o avatar {string} é aplicado como avatar atual do perfil') do |avatar_key|
