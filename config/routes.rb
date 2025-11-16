@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :health_symptoms
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'users/sessions' }
   
   namespace :users do
     resource :profile, only: [:update]

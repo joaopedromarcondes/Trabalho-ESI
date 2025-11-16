@@ -1,7 +1,7 @@
 Dado('minhas permissões de notificação por e-mail estão ativadas') do
-  @notificacao_perms ||= {}
+  EngagementNotifier.notificacao_perms ||= {}
   @user ||= FactoryBot.create(:user, confirmed_at: Time.current)
-  @notificacao_perms[@user.email] = true
+  EngagementNotifier.notificacao_perms[@user.email] = true
 end
 
 Dado('que eu sou um usuário cadastrado no sistema') do
@@ -11,7 +11,7 @@ end
 
 Dado('eu não recebi uma notificação de engajamento no dia') do
   ActionMailer::Base.deliveries.clear
-  @sent_notifications ||= {}
+  EngagementNotifier.sent_notifications ||= {}
 end
 
 Quando('o serviço de envio de e-mails é executado') do
@@ -35,9 +35,9 @@ Então('o conteúdo do e-mail deve conter um link para a home do site') do
 end
 
 Dado('minhas permissões de notificação por e-mail estão desativadas') do
-  @notificacao_perms ||= {}
+  EngagementNotifier.notificacao_perms ||= {}
   @user ||= FactoryBot.create(:user, confirmed_at: Time.current)
-  @notificacao_perms[@user.email] = false
+  EngagementNotifier.notificacao_perms[@user.email] = false
 end
 
 Então('eu não devo receber nenhum e-mail') do
@@ -72,15 +72,15 @@ Então('devo ser redirecionado para a home do site') do
 end
 
 Dado('que eu estou com a permissão de notificação por e-mail ativada') do
-  @notificacao_perms ||= {}
+  EngagementNotifier.notificacao_perms ||= {}
   @user ||= FactoryBot.create(:user, confirmed_at: Time.current)
-  @notificacao_perms[@user.email] = true
+  EngagementNotifier.notificacao_perms[@user.email] = true
 end
 
 Dado('eu já recebi um e-mail de notificação hoje') do
-  @sent_notifications ||= {}
+  EngagementNotifier.sent_notifications ||= {}
   @user ||= FactoryBot.create(:user, confirmed_at: Time.current)
-  @sent_notifications[@user.email] = Date.today
+  EngagementNotifier.sent_notifications[@user.email] = Date.today
   mail = ActionMailer::Base.mail(from: 'no-reply@example.com', to: @user.email,
                                  subject: 'Lembrete diário', body: 'Já recebeu hoje')
   mail.deliver_now
