@@ -13,6 +13,7 @@ Cenário: Adquirir e aplicar um avatar com sucesso
   Quando o usuário adquire o avatar "gato"
   Então a aquisição é aprovada
   E o avatar "gato" passa a estar associado ao usuário
+  Quando o usuário confirma as alterações do perfil
   E o avatar é aplicado como avatar atual do perfil
 
 Cenário: Não permitir adquirir um avatar já possuído
@@ -24,4 +25,5 @@ Cenário: Não permitir adquirir um avatar já possuído
 Cenário: Aplicar um avatar já adquirido
   Dado que o usuário já possui o avatar "coelho"
   Quando o usuário seleciona o avatar "coelho" como avatar atual
+  E o usuário confirma as alterações do perfil
   Então o avatar "coelho" é aplicado como avatar atual do perfil

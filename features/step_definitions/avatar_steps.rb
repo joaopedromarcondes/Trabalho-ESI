@@ -59,6 +59,11 @@ Quando('o usuário seleciona o avatar {string} como avatar atual') do |avatar_ke
   @apply_result = service.select(avatar_key)
 end
 
+Quando('o usuário confirma as alterações do perfil') do
+  service = AvatarService.new(@user, @catalog)
+  @confirm_result = service.confirm_profile_update
+end
+
 Então('o avatar {string} é aplicado como avatar atual do perfil') do |avatar_key|
   expect(@user[:current_avatar]).to eq(avatar_key)
 end

@@ -7,10 +7,14 @@ RSpec.describe AvatarService do
 
   describe '#acquire' do
     context 'quando o avatar existe e não é possuído' do
-      it 'aprova a aquisição e aplica como avatar atual' do
+      it 'aprova a aquisição e marca como pendente até confirmar o perfil' do
         result = subject.acquire('gato')
         expect(result).to eq(:approved)
         expect(user[:owned_avatars]).to include('gato')
+        expect(user[:pending_avatar]).to eq('gato')
+
+        confirm = subject.confirm_profile_update
+        expect(confirm).to eq(:applied)
         expect(user[:current_avatar]).to eq('gato')
       end
     end
@@ -33,9 +37,13 @@ RSpec.describe AvatarService do
 
   describe '#select' do
     context 'quando o avatar é possuído' do
-      it 'aplica o avatar como atual e retorna :ok' do
+      it 'marca a seleção como pendente e retorna :ok; aplica ao confirmar' do
         user[:owned_avatars] << 'coelho'
         expect(subject.select('coelho')).to eq(:ok)
+        expect(user[:pending_avatar]).to eq('coelho')
+
+        confirm = subject.confirm_profile_update
+        expect(confirm).to eq(:applied)
         expect(user[:current_avatar]).to eq('coelho')
       end
     end
