@@ -1,36 +1,41 @@
 class HeatmapClusterGenerator
-  K = 5 # número de clusters
+  def initialize(locations, max_distance: 0.01)
+    @locations = locations
+    @max_distance = max_distance
+  end
 
   def generate
-    points = NoiseMeasurement.all.map { |n| [n.latitude, n.longitude, n.level] }
-    return [] if points.empty?
+    return [] if @locations.empty?
 
-    centroids = points.sample(K)
+    clusters = []
 
-    5.times do
-      clusters = Hash.new { |h, k| h[k] = [] }
+    @locations.each do |loc|
+      found_cluster = false
 
-      points.each do |p|
-        closest = centroids.min_by { |c| distance(p, c) }
-        clusters[closest] << p
+      clusters.each do |c|
+        if distance(c[:centroid], loc) <= @max_distance
+          c[:points] << loc
+          c[:centroid] = recompute_centroid(c[:points])
+          found_cluster = true
+          break
+        end
       end
 
-      centroids = clusters.map do |c, pts|
-        lat = pts.sum { |p| p[0] } / pts.size
-        lng = pts.sum { |p| p[1] } / pts.size
-        lvl = pts.sum { |p| p[2] } / pts.size
-        [lat, lng, lvl]
-      end
+      clusters << { centroid: loc, points: [loc] } unless found_cluster
     end
 
-    centroids.map do |c|
-      { latitude: c[0], longitude: c[1], level: c[2].round }
-    end
+    clusters
   end
 
   private
 
   def distance(a, b)
-    Math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
+    Math.sqrt((a.latitude - b.latitude)**2 + (a.longitude - b.longitude)**2)
+  end
+
+  def recompute_centroid(points)
+    lat = points.map(&:latitude).sum / points.length
+    lng = points.map(&:longitude).sum / points.length
+    OpenStruct.new(latitude: lat, longitude: lng)
   end
 end
