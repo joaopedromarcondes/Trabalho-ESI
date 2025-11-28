@@ -4,5 +4,6 @@ FactoryBot.define do
     sequence(:email) { |n| "teste#{n}@email.com" }
     password { "password123" }
     confirmed_at { Time.current }
+    daily_notifications { true }
   end
 end

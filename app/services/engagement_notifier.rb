@@ -15,11 +15,16 @@ class EngagementNotifier
       users.find_each do |user|
         email = user.email
 
-        perm = notificacao_perms.fetch(email, true)
+        if notificacao_perms.key?(email)
+          perm = notificacao_perms[email]
+        elsif user.respond_to?(:daily_notifications)
+          perm = user.daily_notifications
+        else
+          perm = true
+        end
         next unless perm
 
-        last_sent = sent_notifications[email]
-        if last_sent == Date.today
+        if user.respond_to?(:last_engagement_sent_at) && user.last_engagement_sent_at&.to_date == Date.today
           next
         end
 
@@ -29,12 +34,35 @@ class EngagementNotifier
           '/'
         end
 
-        mail = ActionMailer::Base.mail(from: 'no-reply@example.com', to: email,
-                                       subject: 'Lembrete diário',
-                                       body: "Olá, não se esqueça de entrar em nosso site hoje! Acesse: #{home}")
-        mail.deliver_now
+        EngagementMailer.daily_reminder(user).deliver_later
 
-        sent_notifications[email] = Date.today
+        if user.respond_to?(:last_engagement_sent_at)
+          EngagementReminderJob.perform_later(user.id)
+        else
+          sent_notifications[email] = Date.today
+        end
+      end
+    end
+
+    def run_daily_inline
+      users = User.where.not(confirmed_at: nil)
+      users.find_each do |user|
+        email = user.email
+
+        if notificacao_perms.key?(email)
+          perm = notificacao_perms[email]
+        elsif user.respond_to?(:daily_notifications)
+          perm = user.daily_notifications
+        else
+          perm = true
+        end
+        next unless perm
+
+        if user.respond_to?(:last_engagement_sent_at) && user.last_engagement_sent_at&.to_date == Date.today
+          next
+        end
+
+        EngagementReminderJob.perform_now(user.id)
       end
     end
   end

@@ -40,6 +40,14 @@
       <span class="file-upload-hint">Clique ou arraste uma imagem aqui</span>
     </div>
 
+    <div class="field">
+      <%= f.label :daily_notifications, "Receber notificações diárias por e-mail" %>
+      <div class="checkbox-with-hint">
+        <%= f.check_box :daily_notifications %>
+        <span class="field-hint">Ativado por padrão. Desmarque para não receber.</span>
+      </div>
+    </div>
+
     <div class="actions profile-actions">
       <%= f.submit "Atualizar Perfil", class: 'primary-button' %>
     </div>

@@ -1,42 +1,52 @@
 require 'rails_helper'
 
 RSpec.describe EngagementNotifier, type: :model do
+  include ActiveJob::TestHelper
+
   before do
     ActionMailer::Base.deliveries.clear
     described_class.notificacao_perms.clear
     described_class.sent_notifications.clear
+    ActiveJob::Base.queue_adapter = :test
+    clear_enqueued_jobs
     ENV['APP_HOST'] ||= 'test.host'
   end
 
   describe '.run_daily' do
-    it 'sends email to confirmed users with permission' do
+    it 'envia e-mail para usuários confirmados com permissão' do
       user = FactoryBot.create(:user, confirmed_at: Time.current)
       described_class.notificacao_perms[user.email] = true
 
-      described_class.run_daily
+      perform_enqueued_jobs do
+        described_class.run_daily
+      end
 
       deliveries = ActionMailer::Base.deliveries.select { |m| m.to && m.to.include?(user.email) }
       expect(deliveries.size).to eq(1)
-      expect(described_class.sent_notifications[user.email]).to eq(Date.today)
+      expect(user.reload.last_engagement_sent_at.to_date).to eq(Date.today)
     end
 
-    it 'does not send when permission is false' do
+    it 'não envia quando a permissão está desativada' do
       user = FactoryBot.create(:user, confirmed_at: Time.current)
       described_class.notificacao_perms[user.email] = false
 
-      described_class.run_daily
+      perform_enqueued_jobs do
+        described_class.run_daily
+      end
 
       deliveries = ActionMailer::Base.deliveries.select { |m| m.to && m.to.include?(user.email) }
       expect(deliveries).to be_empty
-      expect(described_class.sent_notifications[user.email]).to be_nil
+      expect(user.reload.last_engagement_sent_at).to be_nil
     end
 
-    it 'does not resend if already sent today' do
+    it 'não reenvia se já foi enviado hoje' do
       user = FactoryBot.create(:user, confirmed_at: Time.current)
       described_class.notificacao_perms[user.email] = true
-      described_class.sent_notifications[user.email] = Date.today
+      user.update!(last_engagement_sent_at: Time.current)
 
-      described_class.run_daily
+      perform_enqueued_jobs do
+        described_class.run_daily
+      end
 
       deliveries = ActionMailer::Base.deliveries.select { |m| m.to && m.to.include?(user.email) }
       expect(deliveries).to be_empty
