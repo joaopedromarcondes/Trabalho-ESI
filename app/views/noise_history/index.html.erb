@@ -1,0 +1,170 @@
+<div class="noise-history-container">
+  <div class="sidebar">
+    <h2>Histórico de Poluição Sonora</h2>
+    
+    <div class="filters-panel">
+      <h3>Filtros</h3>
+      
+      <%= form_with url: noise_history_path, method: :get, local: true, html: { class: 'filters-form' } do |form| %>
+        <div class="filter-group">
+          <label for="start_date">Data Inicial:</label>
+          <%= form.date_field :start_date, id: 'start-date', class: 'filter-input', value: params[:start_date] %>
+        </div>
+        
+        <div class="filter-group">
+          <label for="end_date">Data Final:</label>
+          <%= form.date_field :end_date, id: 'end-date', class: 'filter-input', value: params[:end_date] %>
+        </div>
+        
+        <div class="filter-group">
+          <label for="radius">Raio (km):</label>
+          <%= form.number_field :radius, id: 'radius', class: 'filter-input', min: 0.1, step: 0.1, value: params[:radius] || 5, placeholder: '5' %>
+        </div>
+        
+        <%= form.hidden_field :lat, id: 'filter-lat', value: params[:lat] %>
+        <%= form.hidden_field :lng, id: 'filter-lng', value: params[:lng] %>
+        
+        <div class="filter-group">
+          <%= form.submit 'Aplicar Filtros', id: 'apply-filters', class: 'primary-button' %>
+          <%= link_to 'Limpar', noise_history_path, id: 'clear-filters', class: 'secondary-button' %>
+        </div>
+      <% end %>
+    </div>
+    
+    <div class="stats-panel">
+      <h3>Estatísticas da Região</h3>
+      <div class="stat-item">
+        <span class="stat-label">Total de Medições:</span>
+        <span class="stat-value" id="stat-count"><%= @stats[:count] %></span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Nível Médio:</span>
+        <span class="stat-value" id="stat-average"><%= @stats[:average] %> dB</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Nível Mínimo:</span>
+        <span class="stat-value" id="stat-min"><%= @stats[:min] %> dB</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Nível Máximo:</span>
+        <span class="stat-value" id="stat-max"><%= @stats[:max] %> dB</span>
+      </div>
+    </div>
+    
+    <div class="measurements-list">
+      <h3>Medições Recentes</h3>
+      <div id="measurements-container">
+        <% if @noise_measurements.any? %>
+          <% @noise_measurements.order(created_at: :desc).limit(10).each do |measurement| %>
+            <div class="measurement-item" data-lat="<%= measurement.latitude %>" data-lng="<%= measurement.longitude %>">
+              <div class="measurement-level level-<%= measurement_level_class(measurement.level) %>">
+                <%= measurement.level %> dB
+              </div>
+              <div class="measurement-info">
+                <div class="measurement-date"><%= l measurement.created_at, format: :short %></div>
+                <div class="measurement-coords">
+                  Lat: <%= measurement.latitude.round(4) %>, 
+                  Lng: <%= measurement.longitude.round(4) %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="no-data">Nenhuma medição encontrada para os filtros aplicados.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <div class="map-container" style="flex: 1; min-height: 600px; background: #e5e5e5;">
+    <div id="noise-history-map" style="width: 100%; height: 100%; min-height: 600px;"></div>
+    <div class="map-legend">
+      <h4>Legenda</h4>
+      <div class="legend-item">
+        <span class="legend-marker low"></span>
+        <span>Baixo (0-50 dB)</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-marker medium"></span>
+        <span>Médio (51-70 dB)</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-marker high"></span>
+        <span>Alto (71-85 dB)</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-marker extreme"></span>
+        <span>Extremo (>85 dB)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Inicializar mapa diretamente (inline)
+  (function() {
+    console.log('Script inline executando...');
+    
+    if (typeof L === 'undefined') {
+      console.error('Leaflet não está carregado!');
+      return;
+    }
+    
+    const mapElement = document.getElementById('noise-history-map');
+    if (!mapElement) {
+      console.error('Elemento do mapa não encontrado!');
+      return;
+    }
+    
+    console.log('Criando mapa...');
+    
+    // Dados das medições
+    const measurements = <%= raw @noise_measurements.to_json(only: [:id, :latitude, :longitude, :level, :created_at]) %>;
+    console.log('Medições carregadas:', measurements.length);
+    
+    // Criar mapa
+    const map = L.map('noise-history-map').setView([-23.5505, -46.6333], 12);
+    
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    
+    console.log('Mapa criado!');
+    
+    // Função para determinar cor do marcador
+    function getMarkerColor(level) {
+      if (level <= 50) return '#4CAF50';
+      if (level <= 70) return '#FFC107';
+      if (level <= 85) return '#FF9800';
+      return '#F44336';
+    }
+    
+    // Adicionar marcadores
+    measurements.forEach(function(measurement) {
+      const color = getMarkerColor(measurement.level);
+      const icon = L.divIcon({
+        className: 'custom-marker',
+        html: `<div class="marker-pin" style="background-color: ${color};"></div>`,
+        iconSize: [30, 42],
+        iconAnchor: [15, 42]
+      });
+      
+      const marker = L.marker([measurement.latitude, measurement.longitude], { icon: icon })
+        .addTo(map)
+        .bindPopup(`
+          <div class="marker-popup">
+            <strong>${measurement.level} dB</strong><br>
+            <small>${new Date(measurement.created_at).toLocaleString('pt-BR')}</small>
+          </div>
+        `);
+    });
+    
+    console.log('Marcadores adicionados:', measurements.length);
+    
+    // Forçar redimensionamento
+    setTimeout(function() {
+      map.invalidateSize();
+    }, 100);
+  })();
+</script>
