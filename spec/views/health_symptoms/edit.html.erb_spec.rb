@@ -1,14 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "health_symptoms/edit", type: :view do
+
+  let(:user) { create(:user) }
+
   let(:health_symptom) {
-    HealthSymptom.create!(
-      sintoma: "MyString",
-      intensidade: 1
-    )
+    create(:health_symptom, user: user)
   }
 
   before(:each) do
+    sign_in user
     assign(:health_symptom, health_symptom)
   end
 
@@ -19,7 +20,7 @@ RSpec.describe "health_symptoms/edit", type: :view do
 
       assert_select "input[name=?]", "health_symptom[sintoma]"
 
-      assert_select "input[name=?]", "health_symptom[intensidade]"
+      assert_select "select[name=?]", "health_symptom[intensidade]"
     end
   end
 end

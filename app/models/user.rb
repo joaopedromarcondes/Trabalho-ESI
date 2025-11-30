@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_many :audio_submissions
   has_many :photos
   has_many :noise_measurements
+  has_many :health_symptoms, dependent: :destroy
   has_one_attached :avatar
 
   # Include default devise modules. Others available are:

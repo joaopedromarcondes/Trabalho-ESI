@@ -3,7 +3,7 @@ Dado('que eu estou na tela inicial') do
 end
 
 Dado('existe um usuário com email {string} e senha {string}') do |string, string2|
-    FactoryBot.create(:user, email: string, password: string2)
+    @user = FactoryBot.create(:user, email: string, password: string2)
 end
 
 Quando('eu insiro o email {string}') do |string|
@@ -54,7 +54,7 @@ E('cada sintoma deve mostrar a intensidade do sintoma') do
 end
 
 Dado('que eu tenho um sintoma registrado {string} com intensidade {string}') do |string, string2|
-    @symptom = FactoryBot.create(:health_symptom, sintoma: string, intensidade: string2)
+    @symptom = FactoryBot.create(:health_symptom, sintoma: string, intensidade: string2, user: @user)
 end
 
 E('eu clico no sintoma {string}') do |string|
@@ -95,4 +95,17 @@ end
 
 Quando('eu deixo o campo de sintoma vazio') do
     fill_in 'health_symptom[sintoma]', with: ''
+end
+
+
+Quando('eu tento acessar a página de registro de sintomas') do
+    visit '/health_symptoms/new'
+end
+
+Então('eu devo ser redirecionado para a página de login') do
+    expect(current_path).to eq('/users/sign_in')
+end
+
+Quando('eu tento acessar a página de sintomas') do
+    visit '/health_symptoms'
 end

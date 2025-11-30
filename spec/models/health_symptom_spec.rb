@@ -7,6 +7,12 @@ RSpec.describe HealthSymptom, type: :model do
     expect(subject).to be_valid
   end
 
+  it "is not valid without a user" do
+    sintoma = build(:health_symptom, user: nil)
+    expect(sintoma).not_to be_valid
+    expect(sintoma.errors[:user]).to include("é obrigatório(a)") 
+  end
+
   it 'is not valid without a sintoma' do
     subject.sintoma = nil
     expect(subject).not_to be_valid

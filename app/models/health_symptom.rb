@@ -1,4 +1,6 @@
 class HealthSymptom < ApplicationRecord
+  belongs_to :user
+
   validates :sintoma, presence: true, length: { maximum: 255 }
 
   enum :intensidade, { leve: 0, moderado: 1, alto: 2 }

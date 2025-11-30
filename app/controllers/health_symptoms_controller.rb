@@ -1,4 +1,5 @@
 class HealthSymptomsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_health_symptom, only: %i[ show edit update destroy ]
 
   # GET /health_symptoms or /health_symptoms.json
@@ -21,15 +22,15 @@ class HealthSymptomsController < ApplicationController
 
   # POST /health_symptoms or /health_symptoms.json
   def create
-    @health_symptom = HealthSymptom.new(health_symptom_params)
+    @health_symptom = current_user.health_symptoms.build(health_symptom_params)
 
     respond_to do |format|
       if @health_symptom.save
         format.html { redirect_to @health_symptom, notice: "Sintoma registrado com sucesso." }
         format.json { render :show, status: :created, location: @health_symptom }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @health_symptom.errors, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
+        format.json { render json: @health_symptom.errors, status: :unprocessable_content }
       end
     end
   end
@@ -41,8 +42,8 @@ class HealthSymptomsController < ApplicationController
         format.html { redirect_to @health_symptom, notice: "Sintoma atualizado com sucesso.", status: :see_other }
         format.json { render :show, status: :ok, location: @health_symptom }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @health_symptom.errors, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_content }
+        format.json { render json: @health_symptom.errors, status: :unprocessable_content }
       end
     end
   end
@@ -60,7 +61,7 @@ class HealthSymptomsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_health_symptom
-      @health_symptom = HealthSymptom.find(params.expect(:id))
+      @health_symptom = current_user.health_symptoms.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

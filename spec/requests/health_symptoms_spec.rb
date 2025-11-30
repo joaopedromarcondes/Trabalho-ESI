@@ -17,6 +17,8 @@ RSpec.describe "/health_symptoms", type: :request do
   # This should return the minimal set of attributes required to create a valid
   # HealthSymptom. As you add validations to HealthSymptom, be sure to
   # adjust the attributes here as well.
+  let(:user) { create(:user) }
+
   let(:valid_attributes) {
     attributes_for(:health_symptom)
   }
@@ -25,107 +27,172 @@ RSpec.describe "/health_symptoms", type: :request do
     attributes_for(:health_symptom, sintoma: nil)
   }
 
-  describe "GET /index" do
-    it "renders a successful response" do
-      HealthSymptom.create! valid_attributes
-      get health_symptoms_url
-      expect(response).to be_successful
+  context "quando nao esta logado" do
+    describe "GET /index" do
+      it "redireciona para a pagina de login" do
+        get health_symptoms_url
+        expect(response).to redirect_to(new_user_session_url)
+      end
     end
-  end
 
-  describe "GET /show" do
-    it "renders a successful response" do
-      health_symptom = HealthSymptom.create! valid_attributes
-      get health_symptom_url(health_symptom)
-      expect(response).to be_successful
+    describe "GET /show" do
+      it "redireciona para a pagina de login" do
+        health_symptom = create(:health_symptom)
+        get health_symptom_url(health_symptom)
+        expect(response).to redirect_to(new_user_session_url)
+      end
     end
-  end
 
-  describe "GET /new" do
-    it "renders a successful response" do
-      get new_health_symptom_url
-      expect(response).to be_successful
+    describe "GET /new" do
+      it "redireciona para login" do
+        get new_health_symptom_url
+        expect(response).to redirect_to(new_user_session_url)
+      end
     end
-  end
 
-  describe "GET /edit" do
-    it "renders a successful response" do
-      health_symptom = HealthSymptom.create! valid_attributes
-      get edit_health_symptom_url(health_symptom)
-      expect(response).to be_successful
+    describe "GET /edit" do
+      it "redireciona para login" do
+        health_symptom = create(:health_symptom)
+        get edit_health_symptom_url(health_symptom)
+        expect(response).to redirect_to(new_user_session_url)
+      end
     end
-  end
 
-  describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new HealthSymptom" do
+    describe "POST /create" do
+      it "redireciona para login e não cria registro" do
+        # Garante que a contagem do banco NÃO muda
         expect {
+          post health_symptoms_url, params: { health_symptom: attributes_for(:health_symptom) }
+        }.not_to change(HealthSymptom, :count)
+
+        expect(response).to redirect_to(new_user_session_url)
+      end
+    end
+
+    describe "DELETE /destroy" do
+      it "redireciona para login e não apaga registro" do
+        health_symptom = create(:health_symptom)
+        
+        expect {
+          delete health_symptom_url(health_symptom)
+        }.not_to change(HealthSymptom, :count)
+
+        expect(response).to redirect_to(new_user_session_url)
+      end
+    end
+  end
+
+  context "quando esta logado" do
+    before do
+      sign_in user, scope: :user
+    end
+
+    describe "GET /index" do
+      it "renders a successful response" do
+        create(:health_symptom)
+        get health_symptoms_url
+        expect(response).to be_successful
+      end
+    end
+
+    describe "GET /show" do
+      it "renders a successful response" do
+        health_symptom = create(:health_symptom, user: user)
+        get health_symptom_url(health_symptom)
+        expect(response).to be_successful
+      end
+    end
+
+    describe "GET /new" do
+      it "renders a successful response" do
+        get new_health_symptom_url
+        expect(response).to be_successful
+      end
+    end
+
+    describe "GET /edit" do
+      it "renders a successful response" do
+        health_symptom = create(:health_symptom, user: user)
+        get edit_health_symptom_url(health_symptom)
+        expect(response).to be_successful
+      end
+    end
+
+    describe "POST /create" do
+      context "with valid parameters" do
+        it "creates a new HealthSymptom" do
+          expect {
+            post health_symptoms_url, params: { health_symptom: valid_attributes }
+          }.to change(HealthSymptom, :count).by(1)
+        end
+
+        it "redirects to the created health_symptom" do
           post health_symptoms_url, params: { health_symptom: valid_attributes }
-        }.to change(HealthSymptom, :count).by(1)
+          expect(response).to redirect_to(health_symptom_url(HealthSymptom.last))
+        end
       end
 
-      it "redirects to the created health_symptom" do
-        post health_symptoms_url, params: { health_symptom: valid_attributes }
-        expect(response).to redirect_to(health_symptom_url(HealthSymptom.last))
-      end
-    end
+      context "with invalid parameters" do
+        it "does not create a new HealthSymptom" do
+          expect {
+            post health_symptoms_url, params: { health_symptom: invalid_attributes }
+          }.to change(HealthSymptom, :count).by(0)
+        end
 
-    context "with invalid parameters" do
-      it "does not create a new HealthSymptom" do
-        expect {
+        it "renders a response with 422 status (i.e. to display the 'new' template)" do
           post health_symptoms_url, params: { health_symptom: invalid_attributes }
-        }.to change(HealthSymptom, :count).by(0)
-      end
-
-      it "renders a response with 422 status (i.e. to display the 'new' template)" do
-        post health_symptoms_url, params: { health_symptom: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_content)
-      end
-    end
-  end
-
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:new_attributes) {
-        attributes_for(:health_symptom, intensidade: :moderado)
-      }
-
-      it "updates the requested health_symptom" do
-        health_symptom = HealthSymptom.create! valid_attributes
-        patch health_symptom_url(health_symptom), params: { health_symptom: new_attributes }
-        health_symptom.reload
-        expect(health_symptom.intensidade).to eq("moderado")
-      end
-
-      it "redirects to the health_symptom" do
-        health_symptom = HealthSymptom.create! valid_attributes
-        patch health_symptom_url(health_symptom), params: { health_symptom: new_attributes }
-        health_symptom.reload
-        expect(response).to redirect_to(health_symptom_url(health_symptom))
+          expect(response).to have_http_status(:unprocessable_content)
+        end
       end
     end
 
-    context "with invalid parameters" do
-      it "renders a response with 422 status (i.e. to display the 'edit' template)" do
-        health_symptom = HealthSymptom.create! valid_attributes
-        patch health_symptom_url(health_symptom), params: { health_symptom: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_content)
+    describe "PATCH /update" do
+      context "with valid parameters" do
+        let(:new_attributes) {
+          attributes_for(:health_symptom, intensidade: :moderado)
+        }
+
+        it "updates the requested health_symptom" do
+          health_symptom = create(:health_symptom, user: user)
+          patch health_symptom_url(health_symptom), params: { health_symptom: new_attributes }
+          health_symptom.reload
+          expect(health_symptom.intensidade).to eq("moderado")
+        end
+
+        it "redirects to the health_symptom" do
+          health_symptom = create(:health_symptom, user: user)
+          patch health_symptom_url(health_symptom), params: { health_symptom: new_attributes }
+          health_symptom.reload
+          expect(response).to redirect_to(health_symptom_url(health_symptom))
+        end
+      end
+
+      context "with invalid parameters" do
+        it "renders a response with 422 status (i.e. to display the 'edit' template)" do
+          health_symptom = create(:health_symptom, user: user)
+          patch health_symptom_url(health_symptom), params: { health_symptom: invalid_attributes }
+          expect(response).to have_http_status(:unprocessable_content)
+        end
       end
     end
-  end
 
-  describe "DELETE /destroy" do
-    it "destroys the requested health_symptom" do
-      health_symptom = HealthSymptom.create! valid_attributes
-      expect {
+    describe "DELETE /destroy" do
+      it "destroys the requested health_symptom" do
+        health_symptom = create(:health_symptom, user: user)
+        expect {
+          delete health_symptom_url(health_symptom)
+        }.to change(HealthSymptom, :count).by(-1)
+      end
+
+      it "redirects to the health_symptoms list" do
+        health_symptom = create(:health_symptom, user: user)
         delete health_symptom_url(health_symptom)
-      }.to change(HealthSymptom, :count).by(-1)
+        expect(response).to redirect_to(health_symptoms_url)
+      end
     end
 
-    it "redirects to the health_symptoms list" do
-      health_symptom = HealthSymptom.create! valid_attributes
-      delete health_symptom_url(health_symptom)
-      expect(response).to redirect_to(health_symptoms_url)
-    end
+
   end
+
+
 end

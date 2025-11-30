@@ -7,7 +7,9 @@
         
         <%= link_to 'Enviar Áudio de Ruído', new_audio_submission_path %>
 
-        <%= link_to 'Sintomas de Saúde', health_symptoms_path %>
+        <% if user_signed_in? %>
+            <%= link_to 'Sintomas de Saúde', health_symptoms_path %>
+        <% end %>
     </div>
 </div>
 
