@@ -11,4 +11,9 @@ try {
 } catch (e) {
   console.warn('photo_lightbox not loaded', e);
 }
+try {
+  require('./noise_history_map');
+} catch (e) {
+  console.warn('noise_history_map not loaded', e);
+}
 
