@@ -1,4 +1,4 @@
-class HeatmapController < ApplicationController
+class HeatmapsController < ApplicationController
   def show
     generator =
       case params[:mode]
