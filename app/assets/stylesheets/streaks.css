@@ -1,0 +1,169 @@
+/* Seção de Streaks no Perfil */
+.user-streaks-section {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  margin-bottom: 24px;
+}
+
+.user-streaks-section h3 {
+  color: var(--main-color);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.streaks-summary-profile {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  background: #F9FAFB;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.summary-stat {
+  text-align: center;
+}
+
+.summary-stat .stat-label {
+  font-size: 12px;
+  color: #6B7280;
+  font-weight: 600;
+}
+
+.summary-stat .stat-value {
+  font-size: 20px;
+  color: var(--main-color);
+  font-weight: 700;
+}
+
+.streaks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.streak-card-profile {
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #E5E7EB;
+}
+
+.streak-card-profile.ativa {
+  border-left: 4px solid var(--main-color);
+}
+
+.streak-card-profile:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.streak-header-profile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.streak-header-profile h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0;
+}
+
+.streak-status-badge {
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.streak-status-badge.active {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.streak-status-badge.inactive {
+  background: #FEE2E2;
+  color: #991B1B;
+}
+
+.streak-stats-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.stat-row .stat-label {
+  color: #6B7280;
+  font-weight: 500;
+}
+
+.streak-current-value,
+.streak-longest-value {
+  color: var(--main-color);
+  font-weight: 700;
+}
+
+.streak-last-date {
+  color: #6B7280;
+}
+
+.milestone-alert-profile {
+  background: #FEF3C7;
+  padding: 8px;
+  border-radius: 6px;
+  margin-top: 8px;
+  font-weight: 600;
+  color: #92400E;
+  text-align: center;
+  font-size: 14px;
+}
+
+.progress-bar-profile {
+  background: #E5E7EB;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+
+.progress-fill-profile {
+  background: linear-gradient(90deg, var(--main-color), var(--secondary-color));
+  height: 100%;
+}
+
+.progress-text-profile {
+  font-size: 12px;
+  color: #6B7280;
+  text-align: center;
+  margin: 0;
+}
+
+.empty-state {
+  text-align: center;
+  color: #9CA3AF;
+  padding: 20px;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .streaks-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .streaks-summary-profile {
+    grid-template-columns: 1fr;
+  }
+}

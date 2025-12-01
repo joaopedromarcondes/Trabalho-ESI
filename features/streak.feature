@@ -40,3 +40,34 @@ Funcionalidade: Contador de sequência de contribuições
     Quando o usuário realiza uma nova contribuição no mesmo dia
     Então a sequência deve se manter igual
     E deve exibir uma mensagem informando que a contribuição diária já foi registrada como "Obrigado pela contribuição! Sua sequência de dias continua igual por hoje! Volte amanhã para aumentar sua sequência."
+
+  Cenário: Usuário rastreia múltiplos tipos de atividade
+    Dado que o usuário está cadastrado no sistema
+    E o usuário possui uma sequência atual de 2 para "medida_ruido"
+    E o último registro de contribuição foi ontem
+    Quando o usuário realiza uma nova contribuição de "medida_ruido" hoje
+    Então o usuário deve ter uma sequência de 3 para "medida_ruido"
+    E o usuário deve ter uma maior sequência de 3 para "medida_ruido"
+
+  Cenário: Usuário atinge marco de 7 dias
+    Dado que o usuário possui uma sequência atual de 6 dias
+    E o último registro de contribuição foi ontem
+    Quando o usuário realiza uma nova contribuição hoje
+    Então o sistema deve aumentar a sequência para 7 dias
+    E deve exibir uma mensagem com recompensa para o marco
+
+  Cenário: Usuário mantém histórico de maior sequência
+    Dado que o usuário possui uma sequência atual de 10 dias
+    E o último registro de contribuição foi há 3 dias
+    Quando o usuário realiza uma nova contribuição hoje
+    Então o sistema deve reiniciar a sequência para 1 dia
+    E a maior sequência do usuário deve permanecer 10 dias
+
+  Cenário: Usuário visualiza suas sequências na página de perfil
+    Dado que o usuário está autenticado
+    E o usuário possui sequências registradas
+    Quando o usuário acessa sua página de perfil
+    Então deve ver uma seção de sequências
+    E deve ver a sequência atual de cada atividade
+    E deve ver a maior sequência de cada atividade
+    E deve ver a data do último registro de cada sequência

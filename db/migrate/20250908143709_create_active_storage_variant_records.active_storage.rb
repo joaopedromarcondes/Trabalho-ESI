@@ -1,4 +1,4 @@
-# This migration comes from active_storage (originally 20191206030411)
+rails# This migration comes from active_storage (originally 20191206030411)
 class CreateActiveStorageVariantRecords < ActiveRecord::Migration[6.0]
   def change
     return unless table_exists?(:active_storage_blobs)

@@ -6,6 +6,9 @@
 
 
 require 'cucumber/rails'
+require 'factory_bot'
+require_relative 'factory_bot' if File.exist?(File.expand_path('factory_bot.rb', __dir__))
+require_relative 'warden' if File.exist?(File.expand_path('warden.rb', __dir__))
 
 # By default, any exception happening in your Rails application will bubble up
 # to Cucumber so that your scenario will fail. This is a different from how
@@ -99,5 +102,10 @@ require 'database_cleaner/active_record'
 Before do
   DatabaseCleaner.strategy = :truncation
   DatabaseCleaner.clean
+end
+
+After do
+  # Reset Warden (Devise test helpers)
+  Warden.test_reset! if defined?(Warden)
 end
 

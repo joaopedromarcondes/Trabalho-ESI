@@ -21,6 +21,18 @@ Rails.application.routes.draw do
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
+
+  resources :streaks, only: [:index]
+  namespace :api do
+    namespace :v1 do
+      resources :streaks, only: [:index, :show] do
+        collection do
+          post :registrar_contribuicao
+          post 'resetar/:tipo_atividade', action: :resetar, as: :resetar
+        end
+      end
+    end
+  end
 end
 
 
