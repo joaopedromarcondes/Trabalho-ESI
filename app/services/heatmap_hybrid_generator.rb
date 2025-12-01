@@ -1,22 +1,20 @@
 class HeatmapHybridGenerator
-  def initialize(locations)
-    @locations = locations
+  def initialize
+    @grid = HeatmapGridGenerator.new
+    @cluster = HeatmapClusterGenerator.new
   end
 
   def generate
-    return [] if @locations.empty?
+    grid_data = @grid.generate
+    cluster_data = @cluster.generate
 
-    frequent_points = @locations.group_by { |l| [l.latitude, l.longitude] }
-                                .filter { |_p, list| list.size > 3 }
-                                .map { |p, list| { point: p, count: list.size } }
-
-    grid = HeatmapGridGenerator.new(@locations, grid_size: 8).generate
-    clusters = HeatmapClusterGenerator.new(@locations, max_distance: 0.008).generate
-
-    {
-      frequent_points: frequent_points,
-      grid: grid,
-      clusters: clusters
-    }
+    # Exemplo de combinação: média entre grid e cluster
+    (grid_data + cluster_data).group_by { |p| [p[:latitude], p[:longitude]] }.map do |_, vals|
+      {
+        latitude: vals.first[:latitude],
+        longitude: vals.first[:longitude],
+        level: vals.map { |v| v[:level] }.sum / vals.size
+      }
+    end
   end
 end

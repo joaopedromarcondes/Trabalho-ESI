@@ -1,31 +1,24 @@
-# Serviço responsável por gerar o conjunto de dados para o mapa de calor de ruído em grid
-
 class HeatmapGridGenerator
-  def initialize(locations, grid_size: 10)
-    @locations = locations
-    @grid_size = grid_size
+  GRID_SIZE = 0.01 # em graus
+
+  def initialize
   end
 
   def generate
-    return [] if @locations.empty?
+    measurements = NoiseMeasurement.all
 
-    min_lat = @locations.map(&:latitude).min
-    max_lat = @locations.map(&:latitude).max
-    min_lng = @locations.map(&:longitude).min
-    max_lng = @locations.map(&:longitude).max
-
-    lat_step = (max_lat - min_lat) / @grid_size.to_f
-    lng_step = (max_lng - min_lng) / @grid_size.to_f
-
-    grid = Array.new(@grid_size) { Array.new(@grid_size, 0) }
-
-    @locations.each do |loc|
-      lat_index = [( (loc.latitude - min_lat) / lat_step ).floor, @grid_size - 1].min
-      lng_index = [( (loc.longitude - min_lng) / lng_step ).floor, @grid_size - 1].min
-
-      grid[lat_index][lng_index] += 1
+    grouped = measurements.group_by do |m|
+      lat = (m.latitude / GRID_SIZE).floor * GRID_SIZE
+      lon = (m.longitude / GRID_SIZE).floor * GRID_SIZE
+      [lat, lon]
     end
 
-    grid
+    grouped.map do |(lat, lon), points|
+      {
+        latitude: lat.round(6),
+        longitude: lon.round(6),
+        level: points.map(&:level).sum / points.size
+      }
+    end
   end
 end
