@@ -1,24 +1,29 @@
 require 'rails_helper'
 
 RSpec.describe HeatmapGridGenerator do
-  let(:points) do
-    [
-      OpenStruct.new(latitude: -23.5, longitude: -46.6),
-      OpenStruct.new(latitude: -23.51, longitude: -46.61)
-    ]
+  before do
+    NoiseMeasurement.delete_all
+    200.times do
+      NoiseMeasurement.create!(
+        latitude: -23.55 + rand * 0.1,
+        longitude: -46.63 + rand * 0.1,
+        level: rand(40..100)
+      )
+    end
   end
 
-  it "returns a grid of size NxN" do
-    grid = described_class.new(points, grid_size: 5).generate
-
-    expect(grid.size).to eq(5)
-    expect(grid.first.size).to eq(5)
+  it "gera um array" do
+    result = described_class.new.generate
+    expect(result).to be_an(Array)
   end
 
-  it "counts points inside the grid" do
-    grid = described_class.new(points, grid_size: 2).generate
-    total = grid.flatten.sum
+  it "não gera array vazio" do
+    result = described_class.new.generate
+    expect(result).not_to be_empty
+  end
 
-    expect(total).to eq(2)
+  it "cada ponto contém latitude, longitude e level" do
+    point = described_class.new.generate.first
+    expect(point).to include(:latitude, :longitude, :level)
   end
 end

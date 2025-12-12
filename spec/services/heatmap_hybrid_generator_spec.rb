@@ -1,21 +1,29 @@
 require 'rails_helper'
 
 RSpec.describe HeatmapHybridGenerator do
-  let(:points) do
-    [
-      OpenStruct.new(latitude: -10, longitude: -20),
-      OpenStruct.new(latitude: -10, longitude: -20),
-      OpenStruct.new(latitude: -10, longitude: -20),
-      OpenStruct.new(latitude: -10, longitude: -20),
-      OpenStruct.new(latitude: -11, longitude: -19)
-    ]
+  before do
+    NoiseMeasurement.delete_all
+    200.times do
+      NoiseMeasurement.create!(
+        latitude: -23.55 + rand * 0.1,
+        longitude: -46.63 + rand * 0.1,
+        level: rand(40..100)
+      )
+    end
   end
 
-  it "returns grid, clusters and frequent points" do
-    output = described_class.new(points).generate
+  it "gera um array" do
+    result = described_class.new.generate
+    expect(result).to be_an(Array)
+  end
 
-    expect(output[:grid]).not_to be_nil
-    expect(output[:clusters]).not_to be_nil
-    expect(output[:frequent_points].length).to eq(1)
+  it "não gera array vazio" do
+    result = described_class.new.generate
+    expect(result).not_to be_empty
+  end
+
+  it "cada ponto contém latitude, longitude e level" do
+    point = described_class.new.generate.first
+    expect(point).to include(:latitude, :longitude, :level)
   end
 end
