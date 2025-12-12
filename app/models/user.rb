@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :noise_measurements
   has_many :health_symptoms, dependent: :destroy
   has_many :streaks, dependent: :destroy
+  has_one_attached :avatar
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable

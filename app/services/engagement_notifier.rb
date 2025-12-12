@@ -27,18 +27,11 @@ class EngagementNotifier
         if user.respond_to?(:last_engagement_sent_at) && user.last_engagement_sent_at&.to_date == Date.today
           next
         end
-
-        home = begin
-          Rails.application.routes.url_helpers.root_url(host: ENV['APP_HOST'] || 'http://example.com')
-        rescue StandardError
-          '/'
-        end
-
-        EngagementMailer.daily_reminder(user).deliver_later
-
+        
         if user.respond_to?(:last_engagement_sent_at)
           EngagementReminderJob.perform_later(user.id)
         else
+          EngagementMailer.daily_reminder(user).deliver_later
           sent_notifications[email] = Date.today
         end
       end

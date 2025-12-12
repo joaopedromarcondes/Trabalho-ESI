@@ -17,11 +17,15 @@ RSpec.describe EngagementNotifier, type: :model do
       user = FactoryBot.create(:user, confirmed_at: Time.current)
       described_class.notificacao_perms[user.email] = true
 
+      ActionMailer::Base.deliveries.clear
+
       perform_enqueued_jobs do
         described_class.run_daily
       end
 
-      deliveries = ActionMailer::Base.deliveries.select { |m| m.to && m.to.include?(user.email) }
+      deliveries = ActionMailer::Base.deliveries.select do |m| 
+        m.to.include?(user.email) && m.subject == "Lembrete diário"
+      end
       expect(deliveries.size).to eq(1)
       expect(user.reload.last_engagement_sent_at.to_date).to eq(Date.today)
     end
