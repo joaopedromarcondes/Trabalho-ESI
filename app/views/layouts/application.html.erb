@@ -15,7 +15,7 @@
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
 
-    <%= javascript_importmap_tags %>
+    <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   </head>
 
