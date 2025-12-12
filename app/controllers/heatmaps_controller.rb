@@ -1,13 +1,21 @@
 class HeatmapsController < ApplicationController
   def show
-    generator =
-      case params[:mode]
-      when "grid" then HeatmapGridGenerator.new
-      when "cluster" then HeatmapClusterGenerator.new
-      when "hybrid" then HeatmapHybridGenerator.new
-      else HeatmapGridGenerator.new
-      end
+    mode = params[:mode] || "grid"
 
-    render json: generator.generate
+    generator = case mode
+                when "grid" then HeatmapGridGenerator.new
+                when "cluster" then HeatmapClusterGenerator.new
+                when "hybrid" then HeatmapHybridGenerator.new
+                else
+                  return render json: { error: "Modo inválido: #{mode}" }, status: :bad_request
+                end
+
+    result = generator.generate
+
+    render json: {
+      mode: mode,
+      generated_at: Time.now.utc,
+      points: result
+    }
   end
 end
