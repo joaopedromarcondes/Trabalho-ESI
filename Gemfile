@@ -26,6 +26,8 @@ gem 'jbuilder', '~> 2.7'
 gem 'devise'
 gem 'devise-i18n'
 
+gem 'sendgrid-ruby'
+
 # Use Active Storage variant
 gem 'image_processing', '~> 1.14'
 

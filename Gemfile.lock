@@ -228,7 +228,6 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    mini_portile2 (2.8.9)
     minitest (5.25.5)
     msgpack (1.8.0)
     multi_test (1.1.0)
@@ -242,9 +241,6 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.18.9)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
     nokogiri (1.18.9-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.9-aarch64-linux-musl)
@@ -377,6 +373,7 @@ GEM
     ruby-vips (2.2.5)
       ffi (~> 1.12)
       logger
+    ruby_http_client (3.5.5)
     rubyzip (3.1.0)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -395,6 +392,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
+    sendgrid-ruby (6.7.0)
+      ruby_http_client (~> 3.4)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -411,8 +410,6 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    sqlite3 (2.7.3)
-      mini_portile2 (~> 2.8.0)
     sqlite3 (2.7.3-aarch64-linux-gnu)
     sqlite3 (2.7.3-aarch64-linux-musl)
     sqlite3 (2.7.3-arm-linux-gnu)
@@ -471,7 +468,6 @@ PLATFORMS
   arm-linux-gnu
   arm-linux-musl
   arm64-darwin
-  ruby
   x64-mingw-ucrt
   x86_64-darwin
   x86_64-linux-gnu
@@ -502,6 +498,7 @@ DEPENDENCIES
   rubocop (~> 1.80, >= 1.80.2)
   sass-rails (>= 6)
   selenium-webdriver (>= 4.0.0.rc1)
+  sendgrid-ruby
   simplecov
   simplecov-lcov (~> 0.9.0)
   spring
