@@ -392,6 +392,9 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
+    sendgrid-actionmailer (3.2.0)
+      mail (~> 2.7)
+      sendgrid-ruby (~> 6.4)
     sendgrid-ruby (6.7.0)
       ruby_http_client (~> 3.4)
     simplecov (0.22.0)
@@ -498,7 +501,7 @@ DEPENDENCIES
   rubocop (~> 1.80, >= 1.80.2)
   sass-rails (>= 6)
   selenium-webdriver (>= 4.0.0.rc1)
-  sendgrid-ruby
+  sendgrid-actionmailer
   simplecov
   simplecov-lcov (~> 0.9.0)
   spring
