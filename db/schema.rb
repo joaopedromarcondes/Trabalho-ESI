@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_01_015355) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_14_000123) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -101,6 +101,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_01_015355) do
     t.boolean "styled_profile", default: false, null: false
     t.boolean "daily_notifications", default: true, null: false
     t.datetime "last_engagement_sent_at"
+    t.text "owned_avatars"
+    t.string "pending_avatar"
+    t.string "current_avatar"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -9,6 +9,14 @@ Rails.application.routes.draw do
   
   resources :photos
   resources :audio_submissions, only: [:new, :create]
+  resources :avatars, only: [:index] do
+    collection do
+      post :acquire
+      post :select
+      post :confirm
+      get :confirm
+    end
+  end
   root 'home#index'
   get "home/index"
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

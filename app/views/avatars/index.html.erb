@@ -1,0 +1,27 @@
+<h2>Catálogo de Avatares</h2>
+
+<p>Escolha um avatar do catálogo. Clique em "Adquirir" para adicionar à sua coleção; depois selecione e confirme na página de perfil.</p>
+
+<div class="avatar-catalog">
+  <% @catalog.each do |key, data| %>
+    <div class="avatar-card">
+      <div class="avatar-image">
+        <% img_path = "avatars/#{key}.png" %>
+        <% if asset_exists?(img_path) %>
+          <%= image_tag img_path, alt: data['label'] || key, class: 'avatar-thumb', style: 'width:96px;height:96px;max-width:96px;max-height:96px;object-fit:cover;border-radius:50%;' %>
+        <% else %>
+          <div class="avatar-placeholder"><%= data['label'] || key %></div>
+        <% end %>
+      </div>
+      <div class="avatar-meta">
+        <h4><%= data['label'] || key %></h4>
+        <% if current_user.owned_avatars.include?(key) %>
+          <p class="owned-badge">Possuído</p>
+          <%= button_to 'Selecionar', select_avatars_path(key: key), method: :post, class: 'btn' %>
+        <% else %>
+          <%= button_to 'Adquirir', acquire_avatars_path(key: key), method: :post, class: 'btn primary' %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

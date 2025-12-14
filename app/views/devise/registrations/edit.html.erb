@@ -30,14 +30,34 @@
     </div>
 
     <div class="field avatar-field">
-      <%= f.label :avatar, "Foto do Perfil" %>
-      <% if current_user.avatar.attached? %>
+      <h3>Avatar do Perfil</h3>
+      <% if current_user.current_avatar.present? %>
+        <% img_path = "avatars/#{current_user.current_avatar}.png" %>
         <div class="current-avatar">
-          <%= image_tag url_for(current_user.avatar), class: 'avatar-preview' %>
+          <% if asset_exists?(img_path) %>
+            <%= image_tag img_path, class: 'avatar-preview', alt: current_user.current_avatar, style: 'width:120px;height:120px;object-fit:cover;border-radius:50%;' %>
+          <% else %>
+            <div class="avatar-preview placeholder"><%= current_user.current_avatar %></div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="avatar-preview placeholder">Nenhum avatar selecionado</div>
+      <% end %>
+
+      <% if current_user.pending_avatar.present? %>
+        <div class="pending-avatar">
+          <h4>Pré-visualização (pendente)</h4>
+          <% p = "avatars/#{current_user.pending_avatar}.png" %>
+          <% if asset_exists?(p) %>
+            <%= image_tag p, class: 'avatar-preview pending', alt: current_user.pending_avatar, style: 'width:120px;height:120px;object-fit:cover;border-radius:50%;' %>
+          <% else %>
+            <div class="avatar-preview placeholder"><%= current_user.pending_avatar %></div>
+          <% end %>
+          <%= link_to 'Confirmar alteração', confirm_avatars_path, method: :post, class: 'btn primary', data: { confirm: 'Confirma aplicar o avatar ao perfil?' } %>
         </div>
       <% end %>
-      <%= f.file_field :avatar, accept: 'image/*' %>
-      <span class="file-upload-hint">Clique ou arraste uma imagem aqui</span>
+
+      <p><%= link_to 'Abrir catálogo de avatares', avatars_path, class: 'btn' %></p>
     </div>
 
     <div class="field">

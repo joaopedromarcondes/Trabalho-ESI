@@ -14,6 +14,39 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :bio, length: { maximum: 500 }
 
+  def owned_avatars
+    raw = read_attribute(:owned_avatars)
+    return [] if raw.blank?
+    JSON.parse(raw) rescue []
+  end
+
+  def owned_avatars=(arr)
+    write_attribute(:owned_avatars, arr.to_json)
+  end
+
+  after_initialize do
+    if read_attribute(:owned_avatars).nil?
+      write_attribute(:owned_avatars, [].to_json)
+    end
+  end
+
+  def own_avatar!(key)
+    self.owned_avatars << key unless owned_avatars.include?(key)
+    save if persisted?
+  end
+
+  def select_pending_avatar!(key)
+    self.pending_avatar = key
+    save if persisted?
+  end
+
+  def apply_pending_avatar!
+    return unless pending_avatar
+    self.current_avatar = pending_avatar
+    self.pending_avatar = nil
+    save if persisted?
+  end
+
   def obter_ou_criar_sequencia(tipo_atividade = 'contribuicao')
     streaks.find_or_create_by(tipo_atividade: tipo_atividade)
   end
