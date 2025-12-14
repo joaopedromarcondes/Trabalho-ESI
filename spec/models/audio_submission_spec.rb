@@ -3,7 +3,9 @@ require 'rails_helper'
 RSpec.describe AudioSubmission, type: :model do
   def build_submission(attrs = {})
     defaults = { duration_seconds: 30, latitude: -23.5, longitude: -46.6, audio_attached: true }
-    AudioSubmission.new(defaults.merge(attrs))
+    submission = AudioSubmission.new(defaults.merge(attrs))
+    submission.user = create(:user) unless submission.user
+    submission
   end
 
   it 'is valid with duration <= 60, location and audio' do

@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "AudioSubmissions", type: :request do
+  let(:user) { create(:user) }
+  before do
+    post user_session_path, params: { user: { email: user.email, password: user.password } }
+  end
   def uploaded_audio
     Rack::Test::UploadedFile.new(
       Rails.root.join('spec/fixtures/files/audio_teste.mp3'),

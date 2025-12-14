@@ -6,7 +6,10 @@ class AudioSubmissionsController < ApplicationController
   def create
     @audio_submission = AudioSubmission.new(audio_submission_params)
     @audio_submission.user = current_user
-    @audio_submission.duration_seconds = calculate_audio_duration(params[:audio_submission][:audio])
+    # Only calculate duration from the uploaded audio when the duration isn't provided
+    if params[:audio_submission].nil? || params[:audio_submission][:duration_seconds].blank?
+      @audio_submission.duration_seconds = calculate_audio_duration(params[:audio_submission][:audio])
+    end
 
     if @audio_submission.valid?
       @audio_submission.save

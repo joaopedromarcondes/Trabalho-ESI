@@ -3,6 +3,8 @@ class AudioSubmission < ApplicationRecord
 
   has_one_attached :audio
 
+  attr_accessor :audio_attached
+
   validates :duration_seconds, presence: true
   validate :duration_within_limit
   validate :location_presence
@@ -26,7 +28,7 @@ class AudioSubmission < ApplicationRecord
   end
 
   def audio_presence
-    unless audio.attached?
+    unless audio.attached? || audio_attached
       errors.add(:audio, 'é obrigatório')
     end
   end

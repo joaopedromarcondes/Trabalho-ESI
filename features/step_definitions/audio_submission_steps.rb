@@ -23,6 +23,7 @@ Quando('clico em login') do
   if credentials && credentials[:password] == @entered_password
     @logged_in = true
     @current_page = 'home_authenticated'
+    @logged_in_user_id = 1
   else
     @logged_in = false
     @system_messages << 'Credenciais inválidas'
@@ -55,6 +56,7 @@ Quando('pressiono o botão de enviar') do
   if ready
     @audio_submission[:audio_sent] = true
     @audio_submission[:can_submit] = true
+    @audio_submission[:user_id] = @logged_in_user_id
     @audio_submission[:messages] << 'Áudio enviado com sucesso'
     @audio_submission[:map_points] += 1
   else
@@ -79,9 +81,14 @@ Então('o mapa é atualizado com um novo ponto de ruído') do
   expect(@audio_submission[:map_points]).to be > 0
 end
 
-Dado('seleciono um arquivo de áudio válido') do
-  @audio_submission ||= {}
-  @audio_submission[:audio_selected] = true
+Dado('seleciono minha localização atual no mapa') do
+  @audio_submission[:location_selected] = true
+end
+
+Então('o sistema exibe a mensagem {string} e não permite o envio') do |string|
+  expect(@audio_submission[:messages]).to include(string)
+  expect(@audio_submission[:audio_sent]).to be false
+  expect(@audio_submission[:can_submit]).to be false
 end
 
 Quando('tento enviar o áudio sem selecionar uma localização') do
