@@ -28,6 +28,15 @@
       <div class="user-login">
         <% if user_signed_in? %>
           <span class="greeting">Olá<%= ", #{current_user.name}" if current_user.name.present? %>!</span>
+          <%# show catalog avatar (or uploaded avatar) to the right of the user name %>
+          <% if current_user.current_avatar.present? %>
+            <% img_path = "avatars/#{current_user.current_avatar}.png" %>
+            <% if asset_exists?(img_path) %>
+              <%= image_tag img_path, class: 'avatar-mini', alt: current_user.current_avatar, style: 'margin-left:8px;' %>
+            <% end %>
+          <% elsif current_user.avatar.attached? %>
+            <%= image_tag url_for(current_user.avatar), class: 'avatar-mini', alt: 'Foto de perfil', style: 'margin-left:8px;' %>
+          <% end %>
           <div class="profile-dropdown">
             <button class="profile-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Abrir menu do perfil">
               <div class="profile-link-content">
