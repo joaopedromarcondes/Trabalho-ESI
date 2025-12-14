@@ -16,7 +16,8 @@ Rails.application.routes.draw do
   get 'noise_data', to: 'home#noise_data'
   get 'noise_history', to: 'noise_history#index'
 
-  get 'heatmap', to: 'heatmaps#show'
+  get "/heatmap", to: "heatmaps#index"
+  get "/heatmap_data", to: "heatmaps#data"
   
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"

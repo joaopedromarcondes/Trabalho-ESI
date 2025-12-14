@@ -8,4 +8,3 @@
 
 
 load Rails.root.join("db/seeds/noise_measurements.rb")
-puts "== Fim do Seed =="

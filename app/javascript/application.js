@@ -2,6 +2,11 @@
 
 console.log("JavaScript loaded");
 try {
+	require('./heatmap');
+} catch (e) {
+	console.warn('profile_menu not loaded', e);
+}
+try {
 	require('./profile_menu');
 } catch (e) {
 	console.warn('profile_menu not loaded', e);

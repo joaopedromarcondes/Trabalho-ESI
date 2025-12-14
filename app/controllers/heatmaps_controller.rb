@@ -1,21 +1,23 @@
 class HeatmapsController < ApplicationController
-  def show
+  def index
+    # renderiza a página, sem dados
+  end
+
+  def data
+    # Gera dados dependendo do modo (grid, cluster, etc.)
     mode = params[:mode] || "grid"
-
+    
     generator = case mode
-                when "grid" then HeatmapGridGenerator.new
-                when "cluster" then HeatmapClusterGenerator.new
-                when "hybrid" then HeatmapHybridGenerator.new
+                when "cluster"
+                  HeatmapClusterGenerator.new
+                when "hybrid"
+                  HeatmapHybridGenerator.new
                 else
-                  return render json: { error: "Modo inválido: #{mode}" }, status: :bad_request
+                  HeatmapGridGenerator.new
                 end
+    
+    points = generator.generate
 
-    result = generator.generate
-
-    render json: {
-      mode: mode,
-      generated_at: Time.now.utc,
-      points: result
-    }
+    render json: { points: points }
   end
 end

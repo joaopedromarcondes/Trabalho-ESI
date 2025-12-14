@@ -1,0 +1,40 @@
+/* Página */
+.heatmap-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.heatmap-page h1 {
+  margin-bottom: 16px;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Controles */
+.heatmap-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.heatmap-controls label {
+  font-weight: 500;
+}
+
+.heatmap-controls select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+/* Mapa */
+#map {
+  height: 600px;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
