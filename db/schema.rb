@@ -77,22 +77,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_15_000000) do
     t.index ["user_id"], name: "index_photos_on_user_id"
   end
 
-  create_table "shop_items", force: :cascade do |t|
-    t.string "name", null: false
-    t.text "description"
-    t.decimal "price", precision: 8, scale: 2, null: false
-    t.text "benefits"
-    t.string "category"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["category"], name: "index_shop_items_on_category"
-  end
-
-  create_table "streaks", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -109,8 +93,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_15_000000) do
     t.text "bio"
     t.string "location"
     t.string "website"
-    t.boolean "styled_profile", null: false
-    t.boolean "daily_notifications", null: false
+    t.boolean "styled_profile", default: false, null: false
+    t.boolean "daily_notifications", default: true, null: false
     t.datetime "last_engagement_sent_at"
     t.text "owned_avatars"
     t.string "pending_avatar"

@@ -12,17 +12,17 @@ RSpec.describe HeatmapHybridGenerator do
     end
   end
 
-  it "gera um array" do
+  it 'gera um array' do
     result = described_class.new.generate
     expect(result).to be_an(Array)
   end
 
-  it "não gera array vazio" do
+  it 'não gera array vazio' do
     result = described_class.new.generate
     expect(result).not_to be_empty
   end
 
-  it "cada ponto contém latitude, longitude e level" do
+  it 'cada ponto contém latitude, longitude e level' do
     point = described_class.new.generate.first
     expect(point).to include(:latitude, :longitude, :level)
   end

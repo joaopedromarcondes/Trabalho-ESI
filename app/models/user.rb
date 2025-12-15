@@ -97,4 +97,9 @@ class User < ApplicationRecord
   def todas_as_sequencias
     streaks.order(sequencia_atual: :desc)
   end
+
+  def daily_notifications_enabled?
+    daily_notifications == true
+  end
+
 end

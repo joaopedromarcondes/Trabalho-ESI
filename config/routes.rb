@@ -1,12 +1,13 @@
 Rails.application.routes.draw do
   resources :health_symptoms
-  devise_for :users, controllers: { sessions: 'users/sessions' }
-  
+  devise_for :users, controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
+  }
   namespace :users do
     resource :profile, only: [:update]
     get 'activity', to: 'activity#index', as: 'activity'
   end
-  
   resources :photos
   resources :audio_submissions, only: [:new, :create]
   resources :avatars, only: [:index] do
@@ -17,23 +18,18 @@ Rails.application.routes.draw do
       get :confirm
     end
   end
-
   get '/store', to: 'store#index', as: :store
   post '/store/acquire', to: 'store#acquire', as: :acquire_store
   root 'home#index'
   get "home/index"
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-
   get 'noise_data', to: 'home#noise_data'
   get 'noise_history', to: 'noise_history#index'
-
   get "/heatmap", to: "heatmaps#index"
   get "/heatmap_data", to: "heatmaps#data"
-  
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
-
   resources :streaks, only: [:index]
   namespace :api do
     namespace :v1 do
@@ -46,5 +42,3 @@ Rails.application.routes.draw do
     end
   end
 end
-
-

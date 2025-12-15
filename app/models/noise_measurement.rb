@@ -1,6 +1,6 @@
 # Modelo que representa uma medição de ruído ambiental
 class NoiseMeasurement < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
   validates :latitude, :longitude, :level, presence: true
   validates :level, numericality: true
 

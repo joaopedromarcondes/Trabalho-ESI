@@ -1,7 +1,9 @@
 FactoryBot.define do
   factory :noise_measurement do
-    latitude { 1.5 }
-    longitude { 1.5 }
-    level { 1 }
+    association :user
+    latitude { -23.55 + rand * 0.1 }
+    longitude { -46.63 + rand * 0.1 }
+    level { rand(40..100) }
   end
 end
+
