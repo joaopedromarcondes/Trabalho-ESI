@@ -6,8 +6,8 @@ Dado('que estou logado como um usuário válido') do
     confirmed_at: Time.current
   )
   visit new_user_session_path
-  fill_in 'Email', with: @user.email
-  fill_in 'Password', with: 'password123'
+  fill_in 'user_email', with: @user.email
+  fill_in 'user_password', with: 'password123'
   click_button 'Log in'
 end
 

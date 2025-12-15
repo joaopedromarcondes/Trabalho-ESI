@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_14_000123) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_15_000000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -77,6 +77,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_14_000123) do
     t.index ["user_id"], name: "index_photos_on_user_id"
   end
 
+  create_table "shop_items", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.decimal "price", precision: 8, scale: 2, null: false
+    t.text "benefits"
+    t.string "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_shop_items_on_category"
+  end
+
   create_table "streaks", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -98,12 +109,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_14_000123) do
     t.text "bio"
     t.string "location"
     t.string "website"
-    t.boolean "styled_profile", default: false, null: false
-    t.boolean "daily_notifications", default: true, null: false
+    t.boolean "styled_profile", null: false
+    t.boolean "daily_notifications", null: false
     t.datetime "last_engagement_sent_at"
     t.text "owned_avatars"
     t.string "pending_avatar"
     t.string "current_avatar"
+    t.text "owned_upgrades"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -17,6 +17,9 @@ Rails.application.routes.draw do
       get :confirm
     end
   end
+
+  get '/store', to: 'store#index', as: :store
+  post '/store/acquire', to: 'store#acquire', as: :acquire_store
   root 'home#index'
   get "home/index"
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

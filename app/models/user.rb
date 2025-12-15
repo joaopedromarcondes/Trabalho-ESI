@@ -28,10 +28,41 @@ class User < ApplicationRecord
     if read_attribute(:owned_avatars).nil?
       write_attribute(:owned_avatars, [].to_json)
     end
+
+    if has_attribute?(:owned_upgrades) && read_attribute(:owned_upgrades).nil?
+      write_attribute(:owned_upgrades, [].to_json)
+    end
+  end
+
+  def owned_upgrades
+    return [] unless has_attribute?(:owned_upgrades)
+    raw = read_attribute(:owned_upgrades)
+    return [] if raw.blank?
+    JSON.parse(raw) rescue []
+  end
+
+  def owned_upgrades=(arr)
+    return unless has_attribute?(:owned_upgrades)
+    write_attribute(:owned_upgrades, arr.to_json)
+  end
+
+  def own_upgrade!(key)
+    return unless has_attribute?(:owned_upgrades)
+
+    upgrades = owned_upgrades
+    return if upgrades.include?(key)
+
+    upgrades << key
+    self.owned_upgrades = upgrades
+    save if persisted?
   end
 
   def own_avatar!(key)
-    self.owned_avatars << key unless owned_avatars.include?(key)
+    avatars = owned_avatars
+    return if avatars.include?(key)
+
+    avatars << key
+    self.owned_avatars = avatars
     save if persisted?
   end
 

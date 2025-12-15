@@ -1,15 +1,4 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
  *= require_tree .
  *= require_self
  */
@@ -28,7 +17,6 @@
     font-family: Inter, sans-serif;
 }
 
-/* Mapa da página inicial */
 .conteudo #map { 
   height: 400px; 
   width: 500px; 
@@ -70,12 +58,128 @@ header a:hover {
     margin: auto;
 }
 
-/* Remover restrição de largura para página de histórico de ruído */
 .conteudo:has(.noise-history-container) {
     width: 100%;
     max-width: 100%;
     margin: 0;
     padding: 0;
+}
+
+.store-container {
+  width: 800px;
+  max-width: calc(100% - 32px);
+  margin: 0 auto;
+}
+
+.store-subtitle {
+  text-align: center;
+  color: var(--black);
+  opacity: 0.85;
+  margin-bottom: 16px;
+}
+
+.store-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 760px) {
+  .store-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.store-card {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  background: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.store-card:hover {
+  border-color: rgba(12, 124, 89, 0.35);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+  transform: translateY(-1px);
+}
+
+.store-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.store-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.store-card h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.store-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+  background: rgba(12, 124, 89, 0.08);
+  font-weight: 600;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.store-badge.premium {
+  border-color: var(--secondary-color);
+  color: var(--secondary-color);
+  background: rgba(12, 123, 125, 0.10);
+}
+
+.store-description {
+  margin: 0 0 12px 0;
+  color: #374151;
+}
+
+.store-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.store-actions form {
+  margin: 0;
+  width: 100%;
+}
+
+.store-button {
+  width: 100%;
+}
+
+.store-owned-text {
+  color: #065F46;
+  font-weight: 600;
+  text-align: center;
+}
+
+.primary-button[disabled],
+.primary-button.disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.primary-button[disabled]:hover,
+.primary-button.disabled:hover {
+  background-color: #06604A;
+  box-shadow: none;
 }
 
 .conteudo h1 {
@@ -247,7 +351,6 @@ h2 {
     flex-direction: row;
 }
 
-/* Profile and form styles */
 .profile-section, .password-section {
     background-color: white;
     padding: 24px;
@@ -389,7 +492,6 @@ h2 {
     text-decoration: underline;
 }
 
-/* Profile styles */
 .user-login {
     display: flex;
     align-items: center;
@@ -418,7 +520,6 @@ h2 {
     gap: 8px;
 }
 
-/* Dropdown for profile in header */
 .profile-dropdown {
     position: relative;
     display: inline-block;
@@ -467,7 +568,6 @@ h2 {
     color: var(--white);
 }
 
-/* Make menu sit flush under the button to avoid hover gaps */
 .profile-menu {
     position: absolute;
     right: 0;
@@ -561,7 +661,6 @@ div p {
     margin-bottom: 8px;
 }
 
-/* Photo grid for user activity (Instagram-like) */
 .photo-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -603,7 +702,6 @@ div p {
     color: #6B7280;
 }
 
-/* Responsive: 2 columns on tablet, 1 on mobile */
 @media (max-width: 900px) {
     .photo-grid { grid-template-columns: repeat(2, 1fr); }
 }
@@ -973,7 +1071,6 @@ div p {
   }
 }
 
-/* Lightbox modal for photos */
 .lightbox-backdrop {
     position: fixed;
     left: 0;

@@ -48,7 +48,6 @@
           <% end %>
           <%= link_to photo_path(p), class: 'photo-link', data: { lightbox: true, full_src: full_src } do %>
             <% if p.foto.attached? %>
-              <%# Use a reasonable variant for thumbnails with a safe fallback %>
               <% begin %>
                 <%= image_tag url_for(p.foto.variant(resize_to_fill: [600, 600]).processed), alt: "Foto enviada em #{l p.created_at, format: :short}", class: 'photo-thumb' %>
               <% rescue => _e %>

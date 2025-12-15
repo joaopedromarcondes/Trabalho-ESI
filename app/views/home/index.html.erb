@@ -7,6 +7,8 @@
         
         <%= link_to 'Enviar Áudio de Ruído', new_audio_submission_path %>
 
+        <%= link_to 'Loja', store_path %>
+
         <% if user_signed_in? %>
             <%= link_to 'Sintomas de Saúde', health_symptoms_path %>
         <% end %>
@@ -33,8 +35,6 @@
                 .bindPopup('<img src="<%= url_for(photo.foto) %>" width="150" height="150" loading="lazy"><br><a href="<%= edit_photo_path(photo) %>">Editar imagem</a>')
         <% end %>
 
-        /* console.log("sucess");
-        console.log(pos); */
     }
 
     navigator.geolocation.getCurrentPosition(sucess);

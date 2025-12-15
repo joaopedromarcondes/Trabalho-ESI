@@ -27,8 +27,7 @@
       </div>
       <div class="user-login">
         <% if user_signed_in? %>
-          <span class="greeting">Olá<%= ", #{current_user.name}" if current_user.name.present? %>!</span>
-          <%# show catalog avatar (or uploaded avatar) to the right of the user name %>
+          <span class="greeting">Olá<%= ", #{current_user.name}" if current_user.name.present? %>!<% if current_user.respond_to?(:owned_upgrades) && current_user.owned_upgrades.include?('perfil_plus') %> (Premium)<% end %></span>
           <% if current_user.current_avatar.present? %>
             <% img_path = "avatars/#{current_user.current_avatar}.png" %>
             <% if asset_exists?(img_path) %>
@@ -53,10 +52,10 @@
             </button>
             <ul class="profile-menu" role="menu" aria-label="Menu do perfil">
               <li role="none"><%= link_to 'Minha Atividade', users_activity_path, role: 'menuitem', class: 'profile-menu-item' %></li>
+              <li role="none"><%= link_to 'Loja', store_path, role: 'menuitem', class: 'profile-menu-item' %></li>
               <li role="none"><%= link_to 'Editar Perfil', edit_user_registration_path, role: 'menuitem', class: 'profile-menu-item' %></li>
             </ul>
           </div>
-            <%# garantia de que o menu do perfil funcione corretamente %>
             <script>
               (function(){
                 try {
@@ -70,7 +69,6 @@
                       if (dd.classList.contains('open')) dd.classList.remove('open'); else dd.classList.add('open');
                       return;
                     }
-                    // close if clicking outside any open dropdown
                     var open = document.querySelector('.profile-dropdown.open');
                     if (open && !e.target.closest('.profile-dropdown')) open.classList.remove('open');
                   });

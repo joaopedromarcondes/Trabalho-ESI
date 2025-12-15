@@ -1,0 +1,32 @@
+<div class="store-container">
+  <h1>Loja</h1>
+  <p class="store-subtitle">Clique em um item para adquirir e ativar na sua conta.</p>
+
+  <div class="store-grid">
+    <% @catalog.each do |key, data| %>
+      <% owned = current_user.owned_upgrades.include?(key) %>
+      <div class="store-card" data-upgrade-key="<%= key %>">
+        <div class="store-card-header">
+          <h2><%= data['label'] %></h2>
+          <div class="store-badges">
+            <span class="store-badge premium">Premium</span>
+            <% if owned %>
+              <span class="store-badge acquired">Adquirido</span>
+            <% end %>
+          </div>
+        </div>
+
+        <p class="store-description"><%= data['description'] %></p>
+
+        <div class="store-actions">
+          <% if owned %>
+            <button class="primary-button store-button" disabled>Adquirido</button>
+            <span class="store-owned-text">Já ativo na sua conta</span>
+          <% else %>
+            <%= button_to 'Adquirir', acquire_store_path(key: key), method: :post, class: 'primary-button store-button' %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
