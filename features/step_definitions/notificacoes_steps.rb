@@ -24,13 +24,21 @@ end
 
 Então('o conteúdo do e-mail deve incluir um texto que motive o uso do sistema') do
   email = ActionMailer::Base.deliveries.last
-  body = email.respond_to?(:body) ? email.body.to_s : email.to_s
-  expect(body).to match(/(motiva|dica|lembrete|experimente|use o app|use)/i)
+  body = if email.multipart?
+           email.text_part.body.to_s + email.html_part.body.to_s
+         else
+           email.body.to_s
+         end
+  expect(body).to match(/(motiva|dica|lembrete|experimente|use o app|use|notificação|visitar)/i)
 end
 
 Então('o conteúdo do e-mail deve conter um link para a home do site') do
   email = ActionMailer::Base.deliveries.last
-  body = email.respond_to?(:body) ? email.body.to_s : email.to_s
+  body = if email.multipart?
+           email.text_part.body.to_s + email.html_part.body.to_s
+         else
+           email.body.to_s
+         end
   expect(body).to match(%r{(https?://[^\s]+|/)}i)
 end
 

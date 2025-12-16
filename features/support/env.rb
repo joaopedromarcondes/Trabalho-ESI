@@ -99,6 +99,8 @@ end
 # features/support/env.rb
 require 'database_cleaner/active_record'
 
+ActiveJob::Base.queue_adapter = :inline
+
 Before do
   DatabaseCleaner.strategy = :truncation
   DatabaseCleaner.clean

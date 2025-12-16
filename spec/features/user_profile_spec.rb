@@ -4,8 +4,13 @@ RSpec.describe 'User profile management', type: :feature do
   let(:user) { create(:user, email: 'test@example.com', password: 'password123', name: 'Test User') }
   
   before do
+    Capybara.current_driver = :rack_test
     login_as(user, scope: :user)
     visit edit_user_registration_path
+  end
+  
+  after do
+    Capybara.use_default_driver
   end
 
   it 'allows user to update their name' do

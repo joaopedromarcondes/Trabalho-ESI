@@ -28,6 +28,10 @@ class EngagementNotifier
           next
         end
         
+        if sent_notifications[email] == Date.today
+          next
+        end
+        
         if user.respond_to?(:last_engagement_sent_at)
           EngagementReminderJob.perform_later(user.id)
         else
@@ -54,8 +58,13 @@ class EngagementNotifier
         if user.respond_to?(:last_engagement_sent_at) && user.last_engagement_sent_at&.to_date == Date.today
           next
         end
+        
+        if sent_notifications[email] == Date.today
+          next
+        end
 
         EngagementReminderJob.perform_now(user.id)
+        sent_notifications[email] = Date.today
       end
     end
   end

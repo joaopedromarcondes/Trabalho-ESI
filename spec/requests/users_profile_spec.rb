@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe "Users::Profiles", type: :request do
-  include Devise::Test::IntegrationHelpers
-
-  let(:user) { FactoryBot.create(:user, password: 'password', confirmed_at: Time.current) }
+  let(:user) { FactoryBot.create(:user, password: 'password123', confirmed_at: Time.current) }
 
   before do
-    sign_in user
+    post user_session_path, params: { 
+      user: { email: user.email, password: 'password123' } 
+    }
   end
 
   it 'exibe o checkbox de notificações na edição de perfil' do
